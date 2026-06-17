@@ -708,9 +708,13 @@ function activateTextCell(td,caseId,field){
   if(!c) return;
   td.innerHTML='';
   let input;
-  if(field==='desc'){
+  // 這些欄位用 textarea（不按 Enter 結束）
+  const textareaFields=['desc','name','courthouse','caseNum','courtStock'];
+  if(textareaFields.includes(field)){
     input=document.createElement('textarea');
     input.className='ita';
+    input.style.minHeight='38px';
+    input.style.height='auto';
   } else {
     input=document.createElement('input');
     input.type='text'; input.className='ii';
@@ -719,14 +723,11 @@ function activateTextCell(td,caseId,field){
   input.addEventListener('blur',()=>{commitActiveCell();renderCases();});
   input.addEventListener('keydown',e=>{
     if(e.key==='Escape'){commitActiveCell();renderCases();}
-    if(e.key==='Enter'&&field!=='desc'){commitActiveCell();renderCases();}
   });
   activeCell={td,caseId,field,input};
   td.appendChild(input);
   setTimeout(()=>{input.focus();if(input.select)input.select();},10);
 }
-
-// ── Add / Delete ──
 function addNewCase(){
   // open add case modal
   document.getElementById('caseModalTitle').textContent='新增案件';
