@@ -326,6 +326,7 @@ function doLogin(){
     document.getElementById('loginScreen').style.display='none';
     document.getElementById('app').style.display='flex';
     loadData();
+    setupRealtime();
   } else alert('帳號或密碼錯誤');
 }
 function logout(){
@@ -864,6 +865,18 @@ function dragEnd(e){
   e.currentTarget.classList.remove('dragging');
   document.querySelectorAll('.tn-member').forEach(el=>el.classList.remove('drag-over','dragging'));
   dragSrcId=null;
+}
+
+// ── Supabase Realtime 即時同步 ──
+function setupRealtime(){
+  _SB.channel('db-changes')
+    .on('postgres_changes',{event:'*',schema:'public',table:'members'},function(){
+      loadData();
+    })
+    .on('postgres_changes',{event:'*',schema:'public',table:'cases'},function(){
+      loadData();
+    })
+    .subscribe();
 }
 </script>
 
