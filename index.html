@@ -287,16 +287,28 @@ tbody tr:hover .del-btn{opacity:1;}
 const _SB=supabase.createClient('https://ksmuuwjynapfnhljftol.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtzbXV1d2p5bmFwZm5obGpmdG9sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE2ODgzMzcsImV4cCI6MjA5NzI2NDMzN30.rHCQw0Wkw_8gWoXJux9GlOsed9gch3gcVh3mEjemxhc');
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
 function dbSaveMember(m){
-  if(m.id&&m.id.length>15){_SB.from('members').update({name:m.name,sort_order:m.sort_order||0}).eq('id',m.id).then(()=>{});}
-  else{_SB.from('members').insert({name:m.name,sort_order:m.sort_order||0}).select().single().then(r=>{if(r.data){m.id=r.data.id;renderSidebar();}});}
+  if(m.id&&m.id.length>15){
+    _SB.from('members').update({name:m.name,sort_order:m.sort_order||0}).eq('id',m.id).then(()=>{loadData();});
+  } else {
+    _SB.from('members').insert({name:m.name,sort_order:m.sort_order||0}).select().single().then(r=>{
+      if(r.data){m.id=r.data.id;}
+      loadData();
+    });
+  }
 }
-function dbDeleteMember(id){_SB.from('members').delete().eq('id',id).then(()=>{});}
+function dbDeleteMember(id){_SB.from('members').delete().eq('id',id).then(()=>{loadData();});}
 function dbSaveCase(c){
   const row={name:c.name||'',status:c.status||'urgent',court:c.court||null,deadline:c.deadline||null,courthouse:c.courthouse||'',casenum:c.caseNum||'',courtstock:c.courtStock||'',phone:c.phone||'',ext:c.ext||'',description:c.desc||'',personids:c.personIds||[]};
-  if(c.id&&c.id.length>15){_SB.from('cases').update(row).eq('id',c.id).then(()=>{});}
-  else{_SB.from('cases').insert(row).select().single().then(r=>{if(r.data){c.id=r.data.id;}});}
+  if(c.id&&c.id.length>15){
+    _SB.from('cases').update(row).eq('id',c.id).then(()=>{loadData();});
+  } else {
+    _SB.from('cases').insert(row).select().single().then(r=>{
+      if(r.data){c.id=r.data.id;}
+      loadData();
+    });
+  }
 }
-function dbDeleteCase(id){_SB.from('cases').delete().eq('id',id).then(()=>{});}
+function dbDeleteCase(id){_SB.from('cases').delete().eq('id',id).then(()=>{loadData();});}
 function loadData(){
   Promise.all([
     _SB.from('members').select('*').order('sort_order'),
