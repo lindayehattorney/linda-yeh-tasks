@@ -323,19 +323,25 @@ function doLogin(){
   const u=document.getElementById('lu').value.trim();
   const p=document.getElementById('lp').value;
   if(u==='admin'&&p==='1234'){
-    document.getElementById('loginScreen').style.display='none';
-    document.getElementById('app').style.display='flex';
-    loadData();
-    setupRealtime();
+    sessionStorage.setItem('loggedIn','1');
+    showApp();
   } else alert('帳號或密碼錯誤');
 }
+function showApp(){
+  document.getElementById('loginScreen').style.display='none';
+  document.getElementById('app').style.display='flex';
+  loadData();
+  setupRealtime();
+}
 function logout(){
+  sessionStorage.removeItem('loggedIn');
   document.getElementById('app').style.display='none';
   document.getElementById('loginScreen').style.display='flex';
   document.getElementById('lu').value='';document.getElementById('lp').value='';
 }
 document.addEventListener('DOMContentLoaded',()=>{
   ['lu','lp'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();}));
+  if(sessionStorage.getItem('loggedIn')==='1'){showApp();}
   document.addEventListener('click', e=>{
     // close status popup
     if(!e.target.closest('#statusPopup')&&!e.target.closest('.badge-cell')){
@@ -869,14 +875,16 @@ function dragEnd(e){
 
 // ── Supabase Realtime 即時同步 ──
 function setupRealtime(){
-  _SB.channel('db-changes')
-    .on('postgres_changes',{event:'*',schema:'public',table:'members'},function(){
-      loadData();
-    })
-    .on('postgres_changes',{event:'*',schema:'public',table:'cases'},function(){
-      loadData();
-    })
-    .subscribe();
+  _SB.channel('realtime-all')
+    .on('postgres_changes',{event:'INSERT',schema:'public',table:'members'},function(){ loadData(); })
+    .on('postgres_changes',{event:'UPDATE',schema:'public',table:'members'},function(){ loadData(); })
+    .on('postgres_changes',{event:'DELETE',schema:'public',table:'members'},function(){ loadData(); })
+    .on('postgres_changes',{event:'INSERT',schema:'public',table:'cases'},function(){ loadData(); })
+    .on('postgres_changes',{event:'UPDATE',schema:'public',table:'cases'},function(){ loadData(); })
+    .on('postgres_changes',{event:'DELETE',schema:'public',table:'cases'},function(){ loadData(); })
+    .subscribe(function(status){
+      console.log('Realtime status:', status);
+    });
 }
 </script>
 
