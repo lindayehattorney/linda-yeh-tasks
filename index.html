@@ -31,7 +31,7 @@ body{font-family:'PingFang TC','Microsoft JhengHei',sans-serif;background:var(--
 .fselect option{background:var(--navy-l);}
 
 /* App */
-#app{flex-direction:column;height:100vh;}
+#app{flex-direction:column;height:100vh;} #app[style*="flex"]{display:flex !important;}
 .header{background:linear-gradient(135deg,#0D1B2A,#1A2D42);border-bottom:1px solid var(--bd-b);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:68px;flex-shrink:0;position:relative;}
 .logo{display:flex;align-items:center;gap:14px;}
 .logo-img{width:48px;height:48px;border-radius:50%;object-fit:cover;border:1.5px solid var(--bd-b);background:#fff;}
@@ -157,6 +157,112 @@ tbody tr:hover .del-btn{opacity:1;}
 
 ::-webkit-scrollbar{width:4px;height:4px;}
 ::-webkit-scrollbar-thumb{background:var(--bd-b);border-radius:3px;}
+
+/* ── Responsive Design ── */
+
+/* Tablet (768px and below) */
+@media (max-width: 768px) {
+  .header { padding: 0 16px; height: 60px; }
+  .header-center { display: none; }
+  .logo-name { font-size: 14px; letter-spacing: 1px; }
+  .logo-en { display: none; }
+  .logo-img { width: 40px; height: 40px; }
+
+  .topnav { padding: 0 10px; gap: 4px; height: 44px; overflow-x: auto; }
+  .tn-btn { padding: 5px 10px; font-size: 12px; }
+  .tn-add { padding: 5px 12px; }
+
+  .toolbar { padding: 10px 14px; flex-wrap: wrap; gap: 8px; }
+  .page-title { font-size: 15px; }
+  .search-box { width: 160px; }
+
+  .stats-row { overflow-x: auto; }
+  .stat-box { min-width: 80px; padding: 8px 12px; }
+  .stat-num { font-size: 18px; }
+
+  /* Hide less important columns on tablet */
+  table col.col-courtdiv,
+  thead th:nth-child(7),
+  tbody td:nth-child(7) { display: none; }
+}
+
+/* Mobile (480px and below) */
+@media (max-width: 480px) {
+  .header { height: 56px; padding: 0 12px; }
+  .logo-img { width: 36px; height: 36px; }
+  .logo-name { font-size: 13px; letter-spacing: 0.5px; }
+
+  .topnav { height: 42px; padding: 0 8px; gap: 3px; }
+  .tn-btn { font-size: 11px; padding: 4px 8px; }
+  .m-count { display: none; }
+
+  /* Switch to card layout on mobile */
+  .table-wrap { overflow: visible; }
+  table, thead, tbody, tr, td, th { display: block !important; }
+  thead { display: none !important; }
+
+  tbody tr {
+    background: var(--navy-l);
+    border: 1px solid var(--bd);
+    border-radius: var(--rl);
+    margin: 8px 10px;
+    padding: 12px;
+    display: flex !important;
+    flex-direction: column;
+    gap: 6px;
+  }
+  tbody tr:hover { background: var(--surf-h); }
+
+  tbody td {
+    padding: 0 !important;
+    border: none !important;
+    width: 100% !important;
+    font-size: 13px;
+  }
+
+  /* Card header: name + status */
+  tbody td:nth-child(1) .cw { padding: 0; font-size: 15px; font-weight: 600; }
+  tbody td:nth-child(2) .cw { padding: 0; }
+
+  /* Label before each field */
+  tbody td:nth-child(3)::before { content: "法院／檢察署："; font-size: 10px; color: var(--tm); display: block; margin-bottom: 2px; }
+  tbody td:nth-child(4)::before { content: "負責人："; font-size: 10px; color: var(--tm); display: block; margin-bottom: 2px; }
+  tbody td:nth-child(5)::before { content: "開庭日："; font-size: 10px; color: var(--tm); display: block; margin-bottom: 2px; }
+  tbody td:nth-child(6)::before { content: "工作截止日："; font-size: 10px; color: var(--tm); display: block; margin-bottom: 2px; }
+  tbody td:nth-child(7)::before { content: "進行概述："; font-size: 10px; color: var(--tm); display: block; margin-bottom: 2px; }
+  tbody td:nth-child(8)::before { content: "案號："; font-size: 10px; color: var(--tm); display: block; margin-bottom: 2px; }
+
+  /* Hide less important fields on mobile */
+  tbody td:nth-child(9),
+  tbody td:nth-child(10),
+  tbody td:nth-child(11) { display: none !important; }
+
+  /* Delete button */
+  tbody td:nth-child(12) { display: flex !important; justify-content: flex-end; }
+  .del-btn { opacity: 1 !important; }
+
+  .cw { padding: 0 !important; min-height: auto !important; }
+
+  /* Modal adjustments */
+  .modal { width: 95vw !important; max-height: 90vh; }
+  .mbody { padding: 14px 16px; gap: 10px; }
+  .form-row { grid-template-columns: 1fr !important; }
+
+  /* Stats */
+  .stats-row { flex-wrap: wrap; }
+  .stat-box { flex: 1 1 45%; border-right: none !important; border-bottom: 1px solid var(--bd); }
+
+  /* Calendar popup */
+  .cal-popup { width: calc(100vw - 24px) !important; left: 12px !important; }
+}
+
+
+@media (max-width: 480px) {
+  #loginScreen { padding: 20px; }
+  .lcard { width: 100%; padding: 32px 24px; }
+  .ltitle { font-size: 18px; }
+}
+
 </style>
 </head>
 <body>
@@ -422,7 +528,10 @@ let calYear=0, calMonth=0;
 // ── Login ──
 function showApp(){
   document.getElementById('loginScreen').style.display='none';
-  document.getElementById('app').style.display='flex';
+  var app=document.getElementById('app');
+  app.style.display='flex';
+  app.style.flexDirection='column';
+  app.style.height='100vh';
   loadData().then(function(){ setupRealtime(); });
 }
 function doLogin(){
@@ -452,7 +561,10 @@ document.addEventListener('DOMContentLoaded',()=>{
   var expiry=localStorage.getItem('yl_login_expiry');
   if(token==='VALID' && expiry && Date.now()<parseInt(expiry)){
     document.getElementById('loginScreen').style.display='none';
-    document.getElementById('app').style.display='flex';
+    var app=document.getElementById('app');
+    app.style.display='flex';
+    app.style.flexDirection='column';
+    app.style.height='100vh';
     loadData().then(function(){setupRealtime();});
   }
   document.addEventListener('pointerdown', function(e){
