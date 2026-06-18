@@ -291,6 +291,86 @@ tbody tr:hover .del-btn{opacity:1;}
   .ltitle { font-size: 18px; }
 }
 
+
+/* ── Tablet two-row layout (481px - 1024px) ── */
+@media (min-width: 481px) and (max-width: 1024px) {
+  /* Make each case row a flex container that wraps */
+  tbody tr {
+    display: flex !important;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 0;
+  }
+
+  /* First row cells - all except desc */
+  tbody td {
+    display: flex !important;
+    align-items: center;
+    border-bottom: none !important;
+    flex-shrink: 0;
+  }
+
+  /* desc cell spans full width on second row */
+  tbody td.desc-cell {
+    flex: 0 0 100% !important;
+    width: 100% !important;
+    border-top: 1px solid rgba(201,168,76,0.06) !important;
+    background: rgba(0,0,0,0.1);
+  }
+
+  tbody td.desc-cell .cw {
+    padding: 6px 16px !important;
+    width: 100%;
+  }
+
+  tbody td.desc-cell .cw span {
+    color: var(--t2) !important;
+    font-size: 12px !important;
+    white-space: pre-wrap;
+    line-height: 1.5;
+  }
+
+  /* desc label */
+  tbody td.desc-cell::before {
+    content: "進行概述：";
+    font-size: 10px;
+    color: var(--tm);
+    padding: 6px 0 6px 16px;
+    white-space: nowrap;
+    align-self: flex-start;
+    padding-top: 8px;
+  }
+
+  tbody td.desc-cell {
+    display: flex !important;
+    align-items: flex-start !important;
+  }
+
+  /* Hide desc from normal flow, it goes to second row via order */
+  tbody td.desc-cell { order: 99; }
+
+  /* Column widths for tablet first row */
+  tbody td:nth-child(1) { flex: 0 0 130px; }
+  tbody td:nth-child(2) { flex: 0 0 90px; }
+  tbody td:nth-child(3) { flex: 0 0 95px; }
+  tbody td:nth-child(4) { flex: 0 0 130px; }
+  tbody td:nth-child(5) { flex: 0 0 95px; }
+  tbody td:nth-child(6) { flex: 0 0 95px; }
+  tbody td:nth-child(8) { flex: 0 0 140px; }
+  tbody td:nth-child(9) { flex: 0 0 50px; }
+  tbody td:nth-child(10) { flex: 0 0 110px; }
+  tbody td:nth-child(11) { flex: 0 0 55px; }
+  tbody td:nth-child(12) { flex: 1; justify-content: flex-end; }
+
+  /* Keep table header normal */
+  thead tr { display: table-row !important; }
+  thead th { display: table-cell !important; }
+
+  /* Scroll for header/body sync */
+  .table-wrap { overflow-x: auto; }
+  table { min-width: 100%; }
+}
+
 </style>
 </head>
 <body>
@@ -995,7 +1075,7 @@ function renderCases(){
       <div class="cw"><span class="${dlCls(c.court)}">${fmtDate(c.court)||'<span class="cm">—</span>'}</span></div></td>
     <td class="date-cell ed" onclick="openCalendar(event,'${c.id}','deadline')">
       <div class="cw"><span class="${dlCls(c.deadline)}">${fmtDate(c.deadline)||'<span class="cm">—</span>'}</span></div></td>
-    <td class="ed" data-id="${c.id}" data-field="desc" onclick="activateTextCell(this,'${c.id}','desc')">
+    <td class="ed desc-cell" data-id="${c.id}" data-field="desc" onclick="activateTextCell(this,'${c.id}','desc')">
       <div class="cw"><span class="ct${!c.desc?' cm':''}" style="white-space:pre-wrap;line-height:1.5;word-break:break-word">${c.desc?c.desc.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'):'—'}</span></div></td>
     <td class="ed" data-id="${c.id}" data-field="caseNum" onclick="activateTextCell(this,'${c.id}','caseNum')">
       <div class="cw"><span class="ct${!c.caseNum?' cm':''}">${c.caseNum||'—'}</span></div></td>
