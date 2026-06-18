@@ -371,6 +371,130 @@ tbody tr:hover .del-btn{opacity:1;}
   table { min-width: 100%; }
 }
 
+
+/* ── Tablet Two-Row Layout (481px - 1024px) ── */
+@media (min-width: 481px) and (max-width: 1024px) {
+
+  /* Make table rows flex containers for two-row layout */
+  table { display: block; }
+  thead { display: none; }
+  tbody { display: block; }
+
+  tbody tr {
+    display: block !important;
+    background: var(--navy-l);
+    border: 1px solid var(--bd);
+    border-bottom: 1px solid rgba(201,168,76,0.12);
+    margin: 0;
+    padding: 0;
+    border-radius: 0;
+  }
+  tbody tr:first-child { border-radius: var(--r) var(--r) 0 0; }
+  tbody tr:last-child { border-radius: 0 0 var(--r) var(--r); }
+  tbody tr:hover { background: var(--surf-h); }
+
+  /* Row 1: all fields except desc */
+  .tablet-row1 {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    flex-wrap: nowrap;
+    overflow: hidden;
+    border-bottom: none;
+  }
+
+  /* Row 2: desc only */
+  .tablet-row2 {
+    display: flex;
+    padding: 4px 12px 8px 12px;
+    border-top: 1px solid rgba(201,168,76,0.08);
+  }
+  .tablet-row2:empty { display: none; }
+  .tablet-desc-label {
+    font-size: 10px;
+    color: var(--tm);
+    white-space: nowrap;
+    margin-right: 8px;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+  .tablet-desc-content {
+    font-size: 12px;
+    color: var(--t2);
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  /* Field cells in row 1 */
+  tbody td {
+    display: none !important;
+    padding: 0 !important;
+    border: none !important;
+    vertical-align: middle;
+  }
+
+  /* Show all td as part of custom rows */
+  tbody td.tr1-cell {
+    display: flex !important;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  tbody td.tr1-cell .cw {
+    padding: 2px 4px;
+    min-height: auto;
+  }
+
+  /* Column widths in tablet row1 */
+  td.tc-name { flex: 0 0 140px; }
+  td.tc-courthouse { flex: 0 0 100px; }
+  td.tc-status { flex: 0 0 90px; }
+  td.tc-person { flex: 1 1 auto; min-width: 80px; }
+  td.tc-court { flex: 0 0 90px; }
+  td.tc-deadline { flex: 0 0 90px; }
+  td.tc-casenum { flex: 0 0 130px; }
+  td.tc-stock { flex: 0 0 40px; }
+  td.tc-phone { flex: 0 0 110px; }
+  td.tc-ext { flex: 0 0 50px; }
+  td.tc-actions { flex: 0 0 36px; }
+
+  .cw { padding: 2px 4px !important; min-height: auto !important; }
+
+  /* Stats row */
+  .stats-row { flex-wrap: nowrap; }
+  .stat-box { padding: 10px 14px; }
+  .stat-num { font-size: 18px; }
+
+  /* Modal */
+  .modal { width: 80vw !important; }
+}
+
+
+@media (min-width: 481px) and (max-width: 1024px) {
+  tbody tr:not(.tablet-desc-row) {
+    display: flex !important;
+    flex-wrap: nowrap;
+    align-items: center;
+    padding: 6px 8px;
+    gap: 4px;
+    border-bottom: none !important;
+  }
+  tbody tr.tablet-desc-row {
+    display: block !important;
+    border-top: none !important;
+    margin-top: -1px;
+  }
+  tbody tr.tablet-desc-row + tr:not(.tablet-desc-row) {
+    border-top: 1px solid rgba(201,168,76,0.12) !important;
+  }
+  tbody td { display: none !important; }
+  tbody td.tr1-cell { display: flex !important; }
+  tbody td.td-desc { display: none !important; }
+  .tablet-row2 { cursor: pointer; }
+  .tablet-row2:hover { background: rgba(201,168,76,0.05); border-radius: 4px; }
+}
+
 </style>
 </head>
 <body>
@@ -1088,6 +1212,12 @@ function renderCases(){
     <td style="text-align:center">
       <button class="del-btn" onclick="deleteRow('${c.id}')" title="刪除"><i class="ti ti-trash"></i></button></td>
   </tr>`).join('');
+}
+
+// ── Activate desc cell from tablet row2 ──
+function activateDescCell(caseId){
+  var td=document.querySelector('td.td-desc[data-id="'+caseId+'"]');
+  if(td) activateTextCell(td, caseId, 'desc');
 }
 
 // ── Phone cell: single click = call, double click = edit ──
