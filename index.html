@@ -1456,7 +1456,24 @@ function renderCases(){
       <button class="del-btn" onclick="deleteRow('${c.id}')" title="刪除"><i class="ti ti-trash"></i></button></td>
   </tr>`;
   }).join('');
+  attachRowSelectListeners();
   updateSelectedCountLabel();
+}
+
+// ── Directly attach click listeners to each row using CAPTURE phase ──
+// Capture phase fires BEFORE any child's own onclick (status popup, calendar, edit cell, etc.)
+// so we can intercept the click before it reaches those handlers, regardless of pointer-events CSS support.
+function attachRowSelectListeners(){
+  if(!selectMode) return;
+  var rows = document.querySelectorAll('#caseBody tr[data-case-id]');
+  rows.forEach(function(row){
+    row.addEventListener('click', function(e){
+      e.stopPropagation();
+      e.preventDefault();
+      var caseId = row.getAttribute('data-case-id');
+      if(caseId) toggleCaseSelection(caseId);
+    }, true); // true = capture phase
+  });
 }
 
 // ── Multi-select mode ──
@@ -1469,20 +1486,6 @@ function toggleSelectMode(){
   document.body.classList.toggle('select-mode-on', selectMode);
   renderCases();
 }
-
-// ── Event delegation for row selection (more reliable than inline onclick) ──
-(function(){
-  var caseBodyEl = document.getElementById('caseBody');
-  if(caseBodyEl){
-    caseBodyEl.addEventListener('click', function(e){
-      if(!selectMode) return;
-      var row = e.target.closest('tr[data-case-id]');
-      if(!row) return;
-      var caseId = row.getAttribute('data-case-id');
-      if(caseId) toggleCaseSelection(caseId);
-    });
-  }
-})();
 
 function toggleCaseSelection(caseId){
   var idx = selectedCaseIds.indexOf(caseId);
