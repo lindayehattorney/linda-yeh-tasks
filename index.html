@@ -1051,7 +1051,7 @@ function openAddMember(){
   document.getElementById('mName').value='';
   document.getElementById('delMemberBtn').style.display='none';
   document.getElementById('memberModal').classList.add('show');
-  setTimeout(()=>document.getElementById('mName').focus(),50);
+  document.getElementById('mName').focus();
 }
 function openEditMember(id){
   editingMemberId=id;
@@ -1060,7 +1060,7 @@ function openEditMember(id){
   document.getElementById('mName').value=m.name;
   document.getElementById('delMemberBtn').style.display='inline-flex';
   document.getElementById('memberModal').classList.add('show');
-  setTimeout(()=>document.getElementById('mName').focus(),50);
+  document.getElementById('mName').focus();
 }
 function closeMemberModal(){document.getElementById('memberModal').classList.remove('show');}
 function saveMember(){
@@ -1280,7 +1280,7 @@ function activateTextCell(td,caseId,field){
   });
   activeCell={td,caseId,field,input};
   td.appendChild(input);
-  setTimeout(function(){input.focus();},10);
+  input.focus();
 }
 function addNewCase(){
   // open add case modal
@@ -1307,7 +1307,7 @@ function addNewCase(){
     if(cb) cb.checked=true;
   }
   document.getElementById('caseModal').classList.add('show');
-  setTimeout(()=>document.getElementById('cName').focus(),50);
+  document.getElementById('cName').focus();
 }
 function deleteRow(caseId){
   if(!confirm('確定刪除此案件？（可在垃圾桶復原）')) return;
@@ -1511,7 +1511,7 @@ function openDescEditor(caseId){
   var isDesktop = isDesktopMode();
   var closeBtn = document.getElementById('descEditorCloseBtn');
   closeBtn.style.display = isDesktop ? 'none' : 'inline-block';
-  setTimeout(function(){ ta.focus(); }, 100);
+  ta.focus();
 }
 function closeDescEditor(){
   if(descEditorCaseId){
