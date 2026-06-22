@@ -625,6 +625,30 @@ tbody tr:hover .del-btn{opacity:1;}
 .desc-editor-textarea:focus { border-color: var(--gold); }
 
 
+/* ── Multi-select row mode ── */
+tr.select-row {
+  cursor: pointer;
+}
+tr.select-row > td:not(.checkbox-col) {
+  pointer-events: none;
+}
+tr.select-row:hover {
+  background: rgba(201,168,76,0.08) !important;
+}
+tr.select-row.row-selected {
+  background: rgba(201,168,76,0.14) !important;
+}
+tr.select-row.row-selected:hover {
+  background: rgba(201,168,76,0.18) !important;
+}
+
+/* Mobile/tablet card mode select row */
+@media (max-width: 1024px) {
+  tr.select-row {
+    position: relative;
+  }
+}
+
 /* ── Trash bin ── */
 .trash-item {
   display: flex;
@@ -1401,9 +1425,11 @@ function renderCases(){
     const ac=a.court||'9999', bc=b.court||'9999';
     return ac<bc?-1:ac>bc?1:0;
   });
-  body.innerHTML=data.map(c=>`<tr${selectedCaseIds.includes(c.id)?' style="background:rgba(201,168,76,0.08)"':''}>
-    <td class="checkbox-col tr1-cell" style="${selectMode?'':'display:none'}" onclick="event.stopPropagation()">
-      <div class="cw" style="justify-content:center"><input type="checkbox" class="case-checkbox" data-id="${c.id}" ${selectedCaseIds.includes(c.id)?'checked':''} onchange="toggleCaseSelection('${c.id}')" style="width:18px;height:18px;accent-color:var(--gold);cursor:pointer"></div></td>
+  body.innerHTML=data.map(c=>{
+    var trClass = (selectMode?'select-row':'') + (selectedCaseIds.includes(c.id)?' row-selected':'');
+    return '<tr class="'+trClass+'" data-case-id="'+c.id+'">'+
+    '<td class="checkbox-col tr1-cell" style="'+(selectMode?'':'display:none')+'">'+
+      '<div class="cw" style="justify-content:center"><input type="checkbox" class="case-checkbox" data-id="'+c.id+'" '+(selectedCaseIds.includes(c.id)?'checked':'')+' style="width:18px;height:18px;accent-color:var(--gold);cursor:pointer;pointer-events:none"></div></td>'+`
     <td class="ed" data-id="${c.id}" data-field="name" onclick="activateTextCell(this,'${c.id}','name')">
       <div class="cw"><span class="ct${!c.name?' cm':''}">${c.name||'—'}</span></div></td>
     <td class="ed" data-id="${c.id}" data-field="courthouse" onclick="activateTextCell(this,'${c.id}','courthouse')">
@@ -1428,7 +1454,8 @@ function renderCases(){
       <div class="cw"><span class="ct${!c.ext?' cm':''}">${c.ext||'—'}</span></div></td>
     <td style="text-align:center">
       <button class="del-btn" onclick="deleteRow('${c.id}')" title="刪除"><i class="ti ti-trash"></i></button></td>
-  </tr>`).join('');
+  </tr>`;
+  }).join('');
   updateSelectedCountLabel();
 }
 
@@ -1443,14 +1470,32 @@ function toggleSelectMode(){
   renderCases();
 }
 
+// ── Event delegation for row selection (more reliable than inline onclick) ──
+(function(){
+  var caseBodyEl = document.getElementById('caseBody');
+  if(caseBodyEl){
+    caseBodyEl.addEventListener('click', function(e){
+      if(!selectMode) return;
+      var row = e.target.closest('tr[data-case-id]');
+      if(!row) return;
+      var caseId = row.getAttribute('data-case-id');
+      if(caseId) toggleCaseSelection(caseId);
+    });
+  }
+})();
+
 function toggleCaseSelection(caseId){
   var idx = selectedCaseIds.indexOf(caseId);
   if(idx >= 0){ selectedCaseIds.splice(idx, 1); }
   else { selectedCaseIds.push(caseId); }
   updateSelectedCountLabel();
-  // update row highlight without full re-render to keep checkbox focus
-  var row = document.querySelector('.case-checkbox[data-id="'+caseId+'"]').closest('tr');
-  if(row) row.style.background = selectedCaseIds.includes(caseId) ? 'rgba(201,168,76,0.08)' : '';
+  // update checkbox + row highlight without full re-render
+  var checkbox = document.querySelector('.case-checkbox[data-id="'+caseId+'"]');
+  if(checkbox){
+    checkbox.checked = selectedCaseIds.includes(caseId);
+    var row = checkbox.closest('tr');
+    if(row) row.classList.toggle('row-selected', selectedCaseIds.includes(caseId));
+  }
 }
 
 function updateSelectedCountLabel(){
