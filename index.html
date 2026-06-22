@@ -247,7 +247,8 @@ tbody tr:hover .del-btn{opacity:1;}
   tbody td:nth-child(1) .cw { font-size: 15px; font-weight: 600; }
 
   /* 每個欄位加標籤 */
-  tbody td:nth-child(3)::before { content: "法院／檢察署"; font-size: 10px; color: var(--tm); display: block; margin-bottom: 2px; }
+  tbody td:nth-child(2)::before { content: "法院／檢察署"; font-size: 10px; color: var(--tm); display: block; margin-bottom: 2px; }
+  tbody td:nth-child(3)::before { content: "狀態"; font-size: 10px; color: var(--tm); display: block; margin-bottom: 2px; }
   tbody td:nth-child(4)::before { content: "負責人"; font-size: 10px; color: var(--tm); display: block; margin-bottom: 2px; }
   tbody td:nth-child(5)::before { content: "開庭日"; font-size: 10px; color: var(--tm); display: block; margin-bottom: 2px; }
   tbody td:nth-child(6)::before { content: "工作截止日"; font-size: 10px; color: var(--tm); display: block; margin-bottom: 2px; }
@@ -274,9 +275,49 @@ tbody tr:hover .del-btn{opacity:1;}
   /* ── Calendar ── */
   .cal-popup { width: calc(100vw - 24px) !important; left: 12px !important; right: 12px; }
 
-  /* ── Status & Person popups ── */
-  .status-popup { position: fixed !important; bottom: 0 !important; left: 0 !important; right: 0 !important; top: auto !important; width: 100% !important; border-radius: 16px 16px 0 0; padding: 12px; }
-  #personPopup { position: fixed !important; bottom: 0 !important; left: 0 !important; right: 0 !important; top: auto !important; width: 100% !important; border-radius: 16px 16px 0 0; padding: 12px; max-height: 60vh; overflow-y: auto; }
+  /* ── Status & Person popups: centered "window-in-window" style ── */
+  .status-popup, #personPopup {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    bottom: auto !important;
+    right: auto !important;
+    transform: translate(-50%, -50%) !important;
+    width: 84vw !important;
+    max-width: 360px;
+    max-height: 70vh;
+    overflow-y: auto;
+    border-radius: 18px !important;
+    padding: 18px !important;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px var(--bd-b);
+    border: 1.5px solid var(--bd-b) !important;
+    background: var(--navy-l) !important;
+  }
+  .status-popup .sp-item {
+    padding: 14px 16px;
+    font-size: 15px;
+    border-radius: 10px;
+    margin-bottom: 4px;
+  }
+  .status-popup .sp-item .badge {
+    font-size: 13px;
+    padding: 6px 14px;
+  }
+  #personPopup #personPopupList .sp-item {
+    padding: 14px 16px;
+    font-size: 15px;
+    border-radius: 10px;
+    margin-bottom: 4px;
+  }
+  /* Dim background overlay for the centered popups */
+  .status-popup::before, #personPopup::before {
+    content: '';
+    position: fixed;
+    top: -50vh; left: -50vw;
+    width: 200vw; height: 200vh;
+    background: rgba(0,0,0,0.55);
+    z-index: -1;
+  }
 
   /* 登入頁 */
   #loginScreen { padding: 20px; }
@@ -606,6 +647,7 @@ tbody tr:hover .del-btn{opacity:1;}
 </div>
 
 <!-- Status popup -->
+<div id="statusPopupBackdrop" style="display:none;position:fixed;inset:0;z-index:499;background:transparent;" onclick="document.getElementById('statusPopup').style.display='none';document.getElementById('statusPopupBackdrop').style.display='none';this.style.display='none';"></div>
 <div id="statusPopup" class="status-popup" style="display:none;">
   <div class="sp-item" onclick="setStatus('urgent')"><span class="badge bu">優先處理</span></div>
   <div class="sp-item" onclick="setStatus('progress')"><span class="badge bp">處理中</span></div>
@@ -812,7 +854,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.addEventListener('click', e=>{
     // close status popup
     if(!e.target.closest('#statusPopup')&&!e.target.closest('.badge-cell')){
-      document.getElementById('statusPopup').style.display='none';
+      document.getElementById('statusPopup').style.display='none';document.getElementById('statusPopupBackdrop').style.display='none';
     }
     // close calendar
     if(!e.target.closest('#calPopup')&&!e.target.closest('.date-cell')&&!e.target.closest('.date-trigger')){
@@ -919,6 +961,7 @@ function openStatusPopup(e, caseId){
   statusTarget={caseId};
   const pop=document.getElementById('statusPopup');
   pop.style.display='block';
+  if(window.innerWidth<=1024){ document.getElementById('statusPopupBackdrop').style.display='block'; }
   const rect=e.currentTarget.getBoundingClientRect();
   const popW=160, popH=130;
   let left=rect.left;
@@ -935,7 +978,7 @@ function openStatusPopup(e, caseId){
 function setStatus(s){
   if(!statusTarget) return;
   var caseObj=cases.find(function(x){return x.id===statusTarget.caseId;});
-  document.getElementById('statusPopup').style.display='none';
+  document.getElementById('statusPopup').style.display='none';document.getElementById('statusPopupBackdrop').style.display='none';
   if(caseObj){
     caseObj.status=s;
     renderSidebar(); renderCases();
@@ -1259,6 +1302,7 @@ function openPersonPopup(e, caseId){
   e.stopPropagation();
   commitActiveCell();
   personPopupCaseId=caseId;
+  if(window.innerWidth<=1024){ document.getElementById('personPopupBackdrop').style.display='block'; }
   const c=cases.find(x=>x.id===caseId);
   const selectedIds=c.personIds||(c.personId?[c.personId]:[]);
   const list=document.getElementById('personPopupList');
@@ -1437,6 +1481,7 @@ function dragEnd(e){
 </div>
 
 <!-- Person popup (inline assign) -->
+<div id="personPopupBackdrop" style="display:none;position:fixed;inset:0;z-index:499;background:transparent;" onclick="document.getElementById('personPopup').style.display='none';this.style.display='none';"></div>
 <div id="personPopup" class="status-popup" style="display:none;min-width:180px;">
   <div style="font-size:10px;color:var(--tm);padding:4px 8px 6px;text-transform:uppercase;letter-spacing:.8px">指派負責人</div>
   <div id="personPopupList"></div>
