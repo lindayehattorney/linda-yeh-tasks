@@ -337,212 +337,13 @@ tbody tr:hover .del-btn{opacity:1;}
 }
 
 
-/* ── Tablet two-row layout (481px - 1024px) ── */
-@media (min-width: 481px) and (max-width: 1024px) {
-  /* Make each case row a flex container that wraps */
-  tbody tr {
-    display: flex !important;
-    flex-wrap: wrap;
-    align-items: center;
-    padding: 0;
-  }
-
-  /* First row cells - all except desc */
-  tbody td {
-    display: flex !important;
-    align-items: center;
-    border-bottom: none !important;
-    flex-shrink: 0;
-  }
-
-  /* desc cell spans full width on second row */
-  tbody td.desc-cell {
-    flex: 0 0 100% !important;
-    width: 100% !important;
-    border-top: 1px solid rgba(201,168,76,0.06) !important;
-    background: rgba(0,0,0,0.1);
-  }
-
-  tbody td.desc-cell .cw {
-    padding: 6px 16px !important;
-    width: 100%;
-  }
-
-  tbody td.desc-cell .cw span {
-    color: var(--t2) !important;
-    font-size: 12px !important;
-    white-space: pre-wrap;
-    line-height: 1.5;
-  }
-
-  /* desc label */
-  tbody td.desc-cell::before {
-    content: "進行概述：";
-    font-size: 10px;
-    color: var(--tm);
-    padding: 6px 0 6px 16px;
-    white-space: nowrap;
-    align-self: flex-start;
-    padding-top: 8px;
-  }
-
-  tbody td.desc-cell {
-    display: flex !important;
-    align-items: flex-start !important;
-  }
-
-  /* Hide desc from normal flow, it goes to second row via order */
-  tbody td.desc-cell { order: 99; }
-
-  /* Column widths for tablet first row */
-  tbody td:nth-child(1) { flex: 0 0 130px; }
-  tbody td:nth-child(2) { flex: 0 0 90px; }
-  tbody td:nth-child(3) { flex: 0 0 95px; }
-  tbody td:nth-child(4) { flex: 0 0 130px; }
-  tbody td:nth-child(5) { flex: 0 0 95px; }
-  tbody td:nth-child(6) { flex: 0 0 95px; }
-  tbody td:nth-child(8) { flex: 0 0 140px; }
-  tbody td:nth-child(9) { flex: 0 0 50px; }
-  tbody td:nth-child(10) { flex: 0 0 110px; }
-  tbody td:nth-child(11) { flex: 0 0 55px; }
-  tbody td:nth-child(12) { flex: 1; justify-content: flex-end; }
-
-  /* Keep table header normal */
-  thead tr { display: table-row !important; }
-  thead th { display: table-cell !important; }
-
-  /* Scroll for header/body sync */
-  .table-wrap { overflow-x: auto; }
-  table { min-width: 100%; }
-}
 
 
-/* ── Tablet Two-Row Layout (481px - 1024px) ── */
-@media (min-width: 481px) and (max-width: 1024px) {
-
-  /* Make table rows flex containers for two-row layout */
-  table { display: block; }
-  thead { display: none; }
-  tbody { display: block; }
-
-  tbody tr {
-    display: block !important;
-    background: var(--navy-l);
-    border: 1px solid var(--bd);
-    border-bottom: 1px solid rgba(201,168,76,0.12);
-    margin: 0;
-    padding: 0;
-    border-radius: 0;
-  }
-  tbody tr:first-child { border-radius: var(--r) var(--r) 0 0; }
-  tbody tr:last-child { border-radius: 0 0 var(--r) var(--r); }
-  tbody tr:hover { background: var(--surf-h); }
-
-  /* Row 1: all fields except desc */
-  .tablet-row1 {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 8px 12px;
-    flex-wrap: nowrap;
-    overflow: hidden;
-    border-bottom: none;
-  }
-
-  /* Row 2: desc only */
-  .tablet-row2 {
-    display: flex;
-    padding: 4px 12px 8px 12px;
-    border-top: 1px solid rgba(201,168,76,0.08);
-  }
-  .tablet-row2:empty { display: none; }
-  .tablet-desc-label {
-    font-size: 10px;
-    color: var(--tm);
-    white-space: nowrap;
-    margin-right: 8px;
-    margin-top: 2px;
-    flex-shrink: 0;
-  }
-  .tablet-desc-content {
-    font-size: 12px;
-    color: var(--t2);
-    line-height: 1.5;
-    white-space: pre-wrap;
-    word-break: break-word;
-  }
-
-  /* Field cells in row 1 */
-  tbody td {
-    display: none !important;
-    padding: 0 !important;
-    border: none !important;
-    vertical-align: middle;
-  }
-
-  /* Show all td as part of custom rows */
-  tbody td.tr1-cell {
-    display: flex !important;
-    align-items: center;
-    flex-shrink: 0;
-  }
-  tbody td.tr1-cell .cw {
-    padding: 2px 4px;
-    min-height: auto;
-  }
-
-  /* Checkbox column hidden by default in tablet, shown in select mode */
-  td.checkbox-col { display: none !important; }
-  body.select-mode-on td.checkbox-col { display: flex !important; flex: 0 0 28px; align-items: center; }
-
-  /* Column widths in tablet row1 */
-  td.tc-name { flex: 0 0 140px; }
-  td.tc-courthouse { flex: 0 0 100px; }
-  td.tc-status { flex: 0 0 90px; }
-  td.tc-person { flex: 1 1 auto; min-width: 80px; }
-  td.tc-court { flex: 0 0 90px; }
-  td.tc-deadline { flex: 0 0 90px; }
-  td.tc-casenum { flex: 0 0 130px; }
-  td.tc-stock { flex: 0 0 40px; }
-  td.tc-phone { flex: 0 0 110px; }
-  td.tc-ext { flex: 0 0 50px; }
-  td.tc-actions { flex: 0 0 36px; }
-
-  .cw { padding: 2px 4px !important; min-height: auto !important; }
-
-  /* Stats row */
-  .stats-row { flex-wrap: nowrap; }
-  .stat-box { padding: 10px 14px; }
-  .stat-num { font-size: 18px; }
-
-  /* Modal */
-  .modal { width: 80vw !important; }
-}
 
 
-@media (min-width: 481px) and (max-width: 1024px) {
-  tbody tr:not(.tablet-desc-row) {
-    display: flex !important;
-    flex-wrap: nowrap;
-    align-items: center;
-    padding: 6px 8px;
-    gap: 4px;
-    border-bottom: none !important;
-  }
-  tbody tr.tablet-desc-row {
-    display: block !important;
-    border-top: none !important;
-    margin-top: -1px;
-  }
-  tbody tr.tablet-desc-row + tr:not(.tablet-desc-row) {
-    border-top: 1px solid rgba(201,168,76,0.12) !important;
-  }
-  tbody td { display: none !important; }
-  tbody td.tr1-cell { display: flex !important; }
-  tbody td.td-desc { display: none !important; }
-  .tablet-row2 { cursor: pointer; }
-  .tablet-row2:hover { background: rgba(201,168,76,0.05); border-radius: 4px; }
-}
+
+
+
 
 
 /* ── Fullscreen Desc Editor (Mobile) ── */
@@ -676,185 +477,130 @@ tr.select-row.row-selected:hover {
 
 
 /* ══════════════════════════════════════════
-   iPad 強制套用平板版樣式
+   iPad 寬版卡片設計
    （即使 Safari 開啟「桌面版網站」模式也生效）
    ══════════════════════════════════════════ */
 
-  /* Make each case row a flex container that wraps */
-  html.is-ipad tbody tr {
-    display: flex !important;
-    flex-wrap: wrap;
-    align-items: center;
-    padding: 0;
-  }
-  /* First row cells - all except desc */
-  html.is-ipad tbody td {
-    display: flex !important;
-    align-items: center;
-    border-bottom: none !important;
-    flex-shrink: 0;
-  }
-  /* desc cell spans full width on second row */
-  html.is-ipad tbody td.desc-cell {
-    flex: 0 0 100% !important;
-    width: 100% !important;
-    border-top: 1px solid rgba(201,168,76,0.06) !important;
-    background: rgba(0,0,0,0.1);
-  }
-  html.is-ipad tbody td.desc-cell .cw {
-    padding: 6px 16px !important;
-    width: 100%;
-  }
-  html.is-ipad tbody td.desc-cell .cw span {
-    color: var(--t2) !important;
-    font-size: 12px !important;
-    white-space: pre-wrap;
-    line-height: 1.5;
-  }
-  /* desc label */
-  html.is-ipad tbody td.desc-cell::before {
-    content: "進行概述：";
-    font-size: 10px;
-    color: var(--tm);
-    padding: 6px 0 6px 16px;
-    white-space: nowrap;
-    align-self: flex-start;
-    padding-top: 8px;
-  }
-  html.is-ipad tbody td.desc-cell {
-    display: flex !important;
-    align-items: flex-start !important;
-  }
-  /* Hide desc from normal flow, it goes to second row via order */
-  html.is-ipad tbody td.desc-cell { order: 99; }
-  /* Column widths for tablet first row */
-  html.is-ipad tbody td.checkbox-col { display: none !important; }
-  html.is-ipad body.select-mode-on tbody td.checkbox-col { display: flex !important; flex: 0 0 28px; }
-  html.is-ipad tbody td:nth-child(2) { flex: 0 0 130px; }
-  html.is-ipad tbody td:nth-child(3) { flex: 0 0 90px; }
-  html.is-ipad tbody td:nth-child(4) { flex: 0 0 95px; }
-  html.is-ipad tbody td:nth-child(5) { flex: 0 0 130px; }
-  html.is-ipad tbody td:nth-child(6) { flex: 0 0 95px; }
-  html.is-ipad tbody td:nth-child(7) { flex: 0 0 95px; }
-  html.is-ipad tbody td:nth-child(9) { flex: 0 0 140px; }
-  html.is-ipad tbody td:nth-child(10) { flex: 0 0 50px; }
-  html.is-ipad tbody td:nth-child(11) { flex: 0 0 110px; }
-  html.is-ipad tbody td:nth-child(12) { flex: 0 0 55px; }
-  html.is-ipad tbody td:nth-child(13) { flex: 1; justify-content: flex-end; }
-  /* Keep table header normal */
-  html.is-ipad thead tr { display: table-row !important; }
-  html.is-ipad thead th { display: table-cell !important; }
-  /* Scroll for header/body sync */
-  html.is-ipad .table-wrap { overflow-x: auto; }
-  html.is-ipad table { min-width: 100%; }
-  /* Make table rows flex containers for two-row layout */
-  html.is-ipad table { display: block; }
-  html.is-ipad thead { display: none; }
-  html.is-ipad tbody { display: block; }
-  html.is-ipad tbody tr {
-    display: block !important;
-    background: var(--navy-l);
-    border: 1px solid var(--bd);
-    border-bottom: 1px solid rgba(201,168,76,0.12);
-    margin: 0;
-    padding: 0;
-    border-radius: 0;
-  }
-  html.is-ipad tbody tr:first-child { border-radius: var(--r) var(--r) 0 0; }
-  html.is-ipad tbody tr:last-child { border-radius: 0 0 var(--r) var(--r); }
-  html.is-ipad tbody tr:hover { background: var(--surf-h); }
-  /* Row 1: all fields except desc */
-  html.is-ipad .tablet-row1 {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 8px 12px;
-    flex-wrap: nowrap;
-    overflow: hidden;
-    border-bottom: none;
-  }
-  /* Row 2: desc only */
-  html.is-ipad .tablet-row2 {
-    display: flex;
-    padding: 4px 12px 8px 12px;
-    border-top: 1px solid rgba(201,168,76,0.08);
-  }
-  html.is-ipad .tablet-row2:empty { display: none; }
-  html.is-ipad .tablet-desc-label {
-    font-size: 10px;
-    color: var(--tm);
-    white-space: nowrap;
-    margin-right: 8px;
-    margin-top: 2px;
-    flex-shrink: 0;
-  }
-  html.is-ipad .tablet-desc-content {
-    font-size: 12px;
-    color: var(--t2);
-    line-height: 1.5;
-    white-space: pre-wrap;
-    word-break: break-word;
-  }
-  /* Field cells in row 1 */
-  html.is-ipad tbody td {
-    display: none !important;
-    padding: 0 !important;
-    border: none !important;
-    vertical-align: middle;
-  }
-  /* Show all td as part of custom rows */
-  html.is-ipad tbody td.tr1-cell {
-    display: flex !important;
-    align-items: center;
-    flex-shrink: 0;
-  }
-  html.is-ipad tbody td.tr1-cell .cw {
-    padding: 2px 4px;
-    min-height: auto;
-  }
-  /* Checkbox column hidden by default in tablet, shown in select mode */
-  html.is-ipad td.checkbox-col { display: none !important; }
-  html.is-ipad body.select-mode-on td.checkbox-col { display: flex !important; flex: 0 0 28px; align-items: center; }
-  /* Column widths in tablet row1 */
-  html.is-ipad td.tc-name { flex: 0 0 140px; }
-  html.is-ipad td.tc-courthouse { flex: 0 0 100px; }
-  html.is-ipad td.tc-status { flex: 0 0 90px; }
-  html.is-ipad td.tc-person { flex: 1 1 auto; min-width: 80px; }
-  html.is-ipad td.tc-court { flex: 0 0 90px; }
-  html.is-ipad td.tc-deadline { flex: 0 0 90px; }
-  html.is-ipad td.tc-casenum { flex: 0 0 130px; }
-  html.is-ipad td.tc-stock { flex: 0 0 40px; }
-  html.is-ipad td.tc-phone { flex: 0 0 110px; }
-  html.is-ipad td.tc-ext { flex: 0 0 50px; }
-  html.is-ipad td.tc-actions { flex: 0 0 36px; }
-  html.is-ipad .cw { padding: 2px 4px !important; min-height: auto !important; }
-  /* Stats row */
-  html.is-ipad .stats-row { flex-wrap: nowrap; }
-  html.is-ipad .stat-box { padding: 10px 14px; }
-  html.is-ipad .stat-num { font-size: 18px; }
-  /* Modal */
-  html.is-ipad .modal { width: 80vw !important; }
-  html.is-ipad tbody tr:not(.tablet-desc-row) {
-    display: flex !important;
-    flex-wrap: nowrap;
-    align-items: center;
-    padding: 6px 8px;
-    gap: 4px;
-    border-bottom: none !important;
-  }
-  html.is-ipad tbody tr.tablet-desc-row {
-    display: block !important;
-    border-top: none !important;
-    margin-top: -1px;
-  }
-  html.is-ipad tbody tr.tablet-desc-row + tr:not(.tablet-desc-row) {
-    border-top: 1px solid rgba(201,168,76,0.12) !important;
-  }
-  html.is-ipad tbody td { display: none !important; }
-  html.is-ipad tbody td.tr1-cell { display: flex !important; }
-  html.is-ipad tbody td.td-desc { display: none !important; }
-  html.is-ipad .tablet-row2 { cursor: pointer; }
-  html.is-ipad .tablet-row2:hover { background: rgba(201,168,76,0.05); border-radius: 4px; }
+html.is-ipad table { display: block; width: 100%; }
+html.is-ipad thead { display: none; }
+html.is-ipad tbody { display: block; }
+html.is-ipad .table-wrap { overflow-x: visible; overflow-y: auto; }
+
+html.is-ipad tbody tr:has(td.checkbox-col) {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-areas:
+    "name name name status"
+    "courthouse courthouse courthouse courthouse"
+    "person person person person"
+    "court deadline casenum casenum"
+    "stock phone phone ext"
+    "desc desc desc desc"
+    "actions actions actions actions";
+  gap: 4px 16px;
+  background: var(--navy-l);
+  border: 1px solid var(--bd);
+  border-radius: var(--rl);
+  margin: 10px 16px;
+  padding: 16px 18px;
+}
+html.is-ipad tbody tr:hover { background: var(--surf-h); }
+
+html.is-ipad tbody td {
+  display: block !important;
+  padding: 0 !important;
+  border: none !important;
+}
+html.is-ipad tbody td .cw { padding: 4px 0 !important; min-height: auto !important; }
+
+/* Hide checkbox column unless in select mode */
+html.is-ipad td.checkbox-col { display: none !important; }
+html.is-ipad body.select-mode-on td.checkbox-col {
+  display: block !important;
+  position: absolute;
+  top: 14px; right: 14px;
+}
+html.is-ipad body.select-mode-on tbody tr { position: relative; padding-right: 44px; }
+
+/* Grid area assignments by column position (1=checkbox,2=name,3=courthouse,4=status,5=person,6=court,7=deadline,8=desc,9=casenum,10=stock,11=phone,12=ext,13=actions) */
+html.is-ipad tbody td:nth-child(2)  { grid-area: name; }
+html.is-ipad tbody td:nth-child(3)  { grid-area: courthouse; }
+html.is-ipad tbody td:nth-child(4)  { grid-area: status; justify-self: end; }
+html.is-ipad tbody td:nth-child(5)  { grid-area: person; }
+html.is-ipad tbody td:nth-child(6)  { grid-area: court; }
+html.is-ipad tbody td:nth-child(7)  { grid-area: deadline; }
+html.is-ipad tbody td:nth-child(8)  { grid-area: desc; }
+html.is-ipad tbody td:nth-child(9)  { grid-area: casenum; }
+html.is-ipad tbody td:nth-child(10) { grid-area: stock; }
+html.is-ipad tbody td:nth-child(11) { grid-area: phone; }
+html.is-ipad tbody td:nth-child(12) { grid-area: ext; }
+html.is-ipad tbody td:nth-child(13) { grid-area: actions; justify-self: end; }
+
+/* Field labels (shown above each value, like mobile) */
+html.is-ipad tbody td:nth-child(2)::before  { content: ""; }
+html.is-ipad tbody td:nth-child(3)::before  { content: "法院／檢察署"; }
+html.is-ipad tbody td:nth-child(5)::before  { content: "負責人"; }
+html.is-ipad tbody td:nth-child(6)::before  { content: "開庭日"; }
+html.is-ipad tbody td:nth-child(7)::before  { content: "工作截止日"; }
+html.is-ipad tbody td:nth-child(8)::before  { content: "進行概述"; }
+html.is-ipad tbody td:nth-child(9)::before  { content: "案號"; }
+html.is-ipad tbody td:nth-child(10)::before { content: "股別"; }
+html.is-ipad tbody td:nth-child(11)::before { content: "電話"; }
+html.is-ipad tbody td:nth-child(12)::before { content: "分機"; }
+html.is-ipad tbody td:nth-child(3)::before,
+html.is-ipad tbody td:nth-child(5)::before,
+html.is-ipad tbody td:nth-child(6)::before,
+html.is-ipad tbody td:nth-child(7)::before,
+html.is-ipad tbody td:nth-child(8)::before,
+html.is-ipad tbody td:nth-child(9)::before,
+html.is-ipad tbody td:nth-child(10)::before,
+html.is-ipad tbody td:nth-child(11)::before,
+html.is-ipad tbody td:nth-child(12)::before {
+  display: block;
+  font-size: 10px;
+  color: var(--tm);
+  margin-bottom: 2px;
+}
+
+/* Case name styling - large title */
+html.is-ipad tbody td:nth-child(2) .ct {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--t1);
+  white-space: normal;
+}
+
+/* Courthouse */
+html.is-ipad tbody td:nth-child(3) .cw { padding-top: 0 !important; }
+
+/* Desc block - full width, distinct background */
+html.is-ipad tbody td:nth-child(8) {
+  margin-top: 8px;
+  padding-top: 10px !important;
+  border-top: 1px solid rgba(201,168,76,0.1) !important;
+}
+html.is-ipad tbody td:nth-child(8) .ct {
+  white-space: pre-wrap;
+  line-height: 1.6;
+  font-size: 13px;
+  color: var(--t2);
+}
+
+/* Actions row */
+html.is-ipad tbody td:nth-child(13) {
+  margin-top: 4px;
+}
+html.is-ipad .del-btn { opacity: 0.6 !important; }
+
+/* Status badge top-right */
+html.is-ipad tbody td:nth-child(4) .cw { padding-top: 2px !important; }
+
+/* Stats row stays in one line */
+html.is-ipad .stats-row { flex-wrap: nowrap; }
+html.is-ipad .stat-box { padding: 10px 16px; }
+
+/* Modal width on iPad */
+html.is-ipad .modal { width: 70vw !important; max-width: 600px; }
 
 
 
