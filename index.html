@@ -558,6 +558,14 @@ tbody tr:hover .del-btn{opacity:1;}
   flex-direction: column;
   box-shadow: 0 20px 60px rgba(0,0,0,0.6);
 }
+@media (min-width: 1025px) {
+  .desc-editor-modal {
+    width: 600px;
+    max-width: 90vw;
+    height: 500px;
+    max-height: 70vh;
+  }
+}
 .desc-editor-head {
   padding: 16px 20px;
   border-bottom: 1px solid var(--bd);
@@ -1344,7 +1352,12 @@ function openDescEditor(caseId){
   document.getElementById('descEditorCaseName').textContent = c.name || '未命名案件';
   var ta = document.getElementById('descEditorTextarea');
   ta.value = c.desc || '';
-  document.getElementById('descEditorOverlay').classList.add('show');
+  var overlay = document.getElementById('descEditorOverlay');
+  overlay.classList.add('show');
+  // Desktop (>1024px): no button, click outside or Escape closes
+  var isDesktop = window.innerWidth > 1024;
+  var closeBtn = document.getElementById('descEditorCloseBtn');
+  closeBtn.style.display = isDesktop ? 'none' : 'inline-block';
   setTimeout(function(){ ta.focus(); }, 100);
 }
 function closeDescEditor(){
@@ -1358,24 +1371,26 @@ function closeDescEditor(){
   document.getElementById('descEditorOverlay').classList.remove('show');
   descEditorCaseId = null;
 }
+function descEditorOverlayClick(e){
+  // Only close if clicking the overlay itself (not the modal content) AND on desktop
+  if(e.target.id === 'descEditorOverlay' && window.innerWidth > 1024){
+    closeDescEditor();
+  }
+}
+document.addEventListener('keydown', function(e){
+  if(e.key === 'Escape' && document.getElementById('descEditorOverlay').classList.contains('show') && window.innerWidth > 1024){
+    closeDescEditor();
+  }
+});
 
 // ── Activate desc cell from tablet row2 ──
 function activateDescCell(caseId){
-  if(window.innerWidth<=480){
-    openDescEditor(caseId);
-    return;
-  }
-  var td=document.querySelector('td.td-desc[data-id="'+caseId+'"]');
-  if(td) activateTextCell(td, caseId, 'desc');
+  openDescEditor(caseId);
 }
 
 // ── Decide desc cell behavior by screen size ──
 function handleDescCellClick(e, td, caseId){
-  if(window.innerWidth<=480){
-    openDescEditor(caseId);
-    return;
-  }
-  activateTextCell(td, caseId, 'desc');
+  openDescEditor(caseId);
 }
 
 // ── Phone cell: single click = call, double click = edit ──
@@ -1599,14 +1614,14 @@ function dragEnd(e){
 
 
 <!-- Fullscreen Desc Editor -->
-<div id="descEditorOverlay">
+<div id="descEditorOverlay" onclick="descEditorOverlayClick(event)">
   <div class="desc-editor-modal">
     <div class="desc-editor-head">
       <div>
         <div class="desc-editor-title">進行概述</div>
         <div class="desc-editor-case-name" id="descEditorCaseName"></div>
       </div>
-      <button class="desc-editor-close" onclick="closeDescEditor()">完成</button>
+      <button class="desc-editor-close" id="descEditorCloseBtn" onclick="closeDescEditor()">完成</button>
     </div>
     <div class="desc-editor-body">
       <textarea class="desc-editor-textarea" id="descEditorTextarea"></textarea>
