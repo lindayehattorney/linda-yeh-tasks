@@ -74,6 +74,9 @@ body{font-family:'PingFang TC','Microsoft JhengHei',sans-serif;background:var(--
 /* Stats */
 .stats-row{display:flex;border-bottom:1px solid var(--bd);flex-shrink:0;}
 .stat-box{flex:1;padding:10px 18px;border-right:1px solid var(--bd);}
+.stat-clickable{cursor:pointer;transition:background .15s;}
+.stat-clickable:hover{background:rgba(201,168,76,0.06);}
+.stat-active{background:rgba(201,168,76,0.05);}
 .stat-box:last-child{border-right:none;}
 .stat-num{font-size:20px;font-weight:700;color:var(--gold);}
 .stat-lbl{font-size:10px;color:var(--tm);margin-top:1px;}
@@ -777,6 +780,7 @@ let _realtimeChannel = null;
 let selectedCaseIds = [];
 let selectMode = false;
 let trashedCases = [];
+let statusFilter = null; // null = all, 'urgent'/'progress'/'done' = filtered
 
 // ── Load all data from Supabase ──
 function mapCaseRow(row){
@@ -1346,14 +1350,16 @@ function renderCases(){
     (c.caseNum||'').toLowerCase().includes(q)||
     (c.personIds||[]).some(id=>getMemberName(id).toLowerCase().includes(q))
   );
+  const totalCount=data.length;
   const urgent=data.filter(c=>c.status==='urgent').length;
   const prog=data.filter(c=>c.status==='progress').length;
   const done=data.filter(c=>c.status==='done').length;
+  if(statusFilter) data=data.filter(c=>c.status===statusFilter);
   document.getElementById('statsRow').innerHTML=`
-    <div class="stat-box"><div class="stat-num">${data.length}</div><div class="stat-lbl">全部案件</div></div>
-    <div class="stat-box"><div class="stat-num" style="color:#FF7B7A">${urgent}</div><div class="stat-lbl">優先處理</div></div>
-    <div class="stat-box"><div class="stat-num" style="color:#F5B84A">${prog}</div><div class="stat-lbl">處理中</div></div>
-    <div class="stat-box"><div class="stat-num" style="color:#2ECFA0">${done}</div><div class="stat-lbl">已完成</div></div>
+    <div class="stat-box stat-clickable${statusFilter===null?' stat-active':''}" onclick="setStatusFilter(null)"><div class="stat-num">${totalCount}</div><div class="stat-lbl">全部案件</div></div>
+    <div class="stat-box stat-clickable${statusFilter==='urgent'?' stat-active':''}" onclick="setStatusFilter('urgent')"><div class="stat-num" style="color:#FF7B7A">${urgent}</div><div class="stat-lbl">優先處理</div></div>
+    <div class="stat-box stat-clickable${statusFilter==='progress'?' stat-active':''}" onclick="setStatusFilter('progress')"><div class="stat-num" style="color:#F5B84A">${prog}</div><div class="stat-lbl">處理中</div></div>
+    <div class="stat-box stat-clickable${statusFilter==='done'?' stat-active':''}" onclick="setStatusFilter('done')"><div class="stat-num" style="color:#2ECFA0">${done}</div><div class="stat-lbl">已完成</div></div>
   `;
   const body=document.getElementById('caseBody');
   if(!data.length){
@@ -1423,6 +1429,11 @@ function attachRowSelectListeners(){
 }
 
 // ── Multi-select mode ──
+function setStatusFilter(status){
+  statusFilter = status;
+  renderCases();
+}
+
 function toggleSelectMode(){
   selectMode = !selectMode;
   selectedCaseIds = [];
