@@ -502,10 +502,11 @@ html.is-ipad .table-wrap { overflow-x: visible; overflow-y: auto; }
 html.is-ipad tbody tr:has(td.checkbox-col) {
   display: grid !important;
   grid-template-columns: 90px 1fr 1fr 1fr;
+  overflow: visible;
   grid-template-areas:
     "status name name name"
     "courthouse person court deadline"
-    "casenum stock phone ext"
+    "stock casenum phone ext"
     "desc desc desc desc"
     "actions actions actions actions";
   gap: 6px 16px;
@@ -536,7 +537,7 @@ html.is-ipad body.select-mode-on td.checkbox-col {
 html.is-ipad body.select-mode-on tbody tr { position: relative; padding-right: 44px; }
 
 /* Grid area assignments by column position (1=checkbox,2=name,3=courthouse,4=status,5=person,6=court,7=deadline,8=desc,9=casenum,10=stock,11=phone,12=ext,13=actions) */
-html.is-ipad tbody td:nth-child(2)  { grid-area: name; background: transparent !important; box-shadow: none !important; align-self: center; }
+html.is-ipad tbody td:nth-child(2)  { grid-area: name; background: transparent !important; box-shadow: none !important; align-self: center; overflow: visible; min-width: 0; }
 html.is-ipad tbody td:nth-child(3)  { grid-area: courthouse; }
 html.is-ipad tbody td:nth-child(4)  { grid-area: status; justify-self: start; align-self: center; }
 html.is-ipad tbody td:nth-child(5)  { grid-area: person; }
@@ -544,8 +545,9 @@ html.is-ipad tbody td:nth-child(5) div[style] { flex-direction: row !important; 
 html.is-ipad tbody td:nth-child(6)  { grid-area: court; }
 html.is-ipad tbody td:nth-child(7)  { grid-area: deadline; }
 html.is-ipad tbody td:nth-child(8)  { grid-area: desc; }
-html.is-ipad tbody td:nth-child(9)  { grid-area: casenum; }
-html.is-ipad tbody td:nth-child(10) { grid-area: stock; }
+html.is-ipad tbody td:nth-child(9)  { grid-area: stock; }
+html.is-ipad tbody td:nth-child(10) { grid-area: casenum; }
+html.is-ipad tbody td:nth-child(10) .ct { white-space: nowrap; overflow: visible; }
 html.is-ipad tbody td:nth-child(11) { grid-area: phone; }
 html.is-ipad tbody td:nth-child(12) { grid-area: ext; }
 html.is-ipad tbody td:nth-child(13) { grid-area: actions; justify-self: end; }
@@ -553,13 +555,19 @@ html.is-ipad tbody td:nth-child(13) { grid-area: actions; justify-self: end; }
 /* Field labels (shown above each value, like mobile) */
 html.is-ipad tbody td:nth-child(2)::before  { content: ""; }
 html.is-ipad tbody td:nth-child(3)::before  { content: "法院／檢察署"; }
+html.is-ipad tbody td:nth-child(5) { text-align: center; }
 html.is-ipad tbody td:nth-child(5)::before  { content: "負責人"; }
+html.is-ipad tbody td:nth-child(6) { text-align: center; }
 html.is-ipad tbody td:nth-child(6)::before  { content: "開庭日"; }
+html.is-ipad tbody td:nth-child(7) { text-align: center; }
 html.is-ipad tbody td:nth-child(7)::before  { content: "工作截止日"; }
 html.is-ipad tbody td:nth-child(8)::before  { content: "進行概述"; }
-html.is-ipad tbody td:nth-child(9)::before  { content: "案號"; }
-html.is-ipad tbody td:nth-child(10)::before { content: "股別"; }
+html.is-ipad tbody td:nth-child(9) { text-align: center; }
+html.is-ipad tbody td:nth-child(9)::before  { content: "股別"; }
+html.is-ipad tbody td:nth-child(10)::before { content: "案號"; }
+html.is-ipad tbody td:nth-child(11) { text-align: center; }
 html.is-ipad tbody td:nth-child(11)::before { content: "電話"; }
+html.is-ipad tbody td:nth-child(12) { text-align: center; }
 html.is-ipad tbody td:nth-child(12)::before { content: "分機"; }
 html.is-ipad tbody td:nth-child(3)::before,
 html.is-ipad tbody td:nth-child(5)::before,
