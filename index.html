@@ -513,7 +513,7 @@ html.is-ipad tbody tr:has(td.checkbox-col) {
   border: 1px solid var(--bd);
   border-radius: var(--rl);
   margin: 10px 16px;
-  padding: 16px 18px;
+  padding: 18px 20px;
 }
 html.is-ipad tbody tr:hover { background: var(--surf-h); }
 
@@ -521,6 +521,7 @@ html.is-ipad tbody td {
   display: block !important;
   padding: 0 !important;
   border: none !important;
+  font-size: 15px;
 }
 html.is-ipad tbody td .cw { padding: 4px 0 !important; min-height: auto !important; }
 
@@ -538,6 +539,7 @@ html.is-ipad tbody td:nth-child(2)  { grid-area: name; background: transparent !
 html.is-ipad tbody td:nth-child(3)  { grid-area: courthouse; }
 html.is-ipad tbody td:nth-child(4)  { grid-area: status; justify-self: end; }
 html.is-ipad tbody td:nth-child(5)  { grid-area: person; }
+html.is-ipad tbody td:nth-child(5) div[style] { flex-direction: row !important; flex-wrap: wrap; gap: 4px !important; }
 html.is-ipad tbody td:nth-child(6)  { grid-area: court; }
 html.is-ipad tbody td:nth-child(7)  { grid-area: deadline; }
 html.is-ipad tbody td:nth-child(8)  { grid-area: desc; }
@@ -568,14 +570,14 @@ html.is-ipad tbody td:nth-child(10)::before,
 html.is-ipad tbody td:nth-child(11)::before,
 html.is-ipad tbody td:nth-child(12)::before {
   display: block;
-  font-size: 10px;
+  font-size: 12px;
   color: var(--tm);
-  margin-bottom: 2px;
+  margin-bottom: 3px;
 }
 
 /* Case name styling - large title */
 html.is-ipad tbody td:nth-child(2) .ct {
-  font-size: 17px;
+  font-size: 20px;
   font-weight: 600;
   color: var(--t1);
   white-space: normal;
@@ -583,6 +585,7 @@ html.is-ipad tbody td:nth-child(2) .ct {
 
 /* Courthouse */
 html.is-ipad tbody td:nth-child(3) .cw { padding-top: 0 !important; }
+html.is-ipad tbody td:nth-child(3) .ct { white-space: nowrap !important; overflow: hidden; text-overflow: ellipsis; }
 
 /* Desc block - full width, distinct background */
 html.is-ipad tbody td:nth-child(8) {
@@ -593,7 +596,7 @@ html.is-ipad tbody td:nth-child(8) {
 html.is-ipad tbody td:nth-child(8) .ct {
   white-space: pre-wrap;
   line-height: 1.6;
-  font-size: 13px;
+  font-size: 15px;
   color: var(--t2);
 }
 
@@ -1422,7 +1425,7 @@ function renderCases(){
     <td class="ed" data-id="${c.id}" data-field="name" onclick="activateTextCell(this,'${c.id}','name')" style="width:180px">
       <div class="cw"><span class="ct${!c.name?' cm':''}" style="white-space:pre-wrap;word-break:break-word;line-height:1.4">${c.name?c.name.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'):'—'}</span></div></td>
     <td class="ed" data-id="${c.id}" data-field="courthouse" onclick="activateTextCell(this,'${c.id}','courthouse')" style="width:90px;max-width:90px">
-      <div class="cw"><span class="ct${!c.courthouse?' cm':''}" style="white-space:pre-wrap;word-break:break-word">${c.courthouse?(window.innerWidth<=1024?c.courthouse.replace(/\n/g,' '):c.courthouse).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'):'—'}</span></div></td>
+      <div class="cw"><span class="ct${!c.courthouse?' cm':''}" style="white-space:pre-wrap;word-break:break-word">${c.courthouse?(window.innerWidth<=1024?c.courthouse.replace(/[\n\r]+/g,' ').trim():c.courthouse).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'):'—'}</span></div></td>
     <td class="badge-cell" onclick="openStatusPopup(event,'${c.id}')">
       <div class="cw" style="justify-content:center">${badge(c.status)}</div></td>
     <td class="person-cell" onclick="openPersonPopup(event,'${c.id}')">
