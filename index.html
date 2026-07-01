@@ -83,8 +83,12 @@ body{font-family:'PingFang TC','Microsoft JhengHei',sans-serif;background:var(--
 
 /* Table */
 .table-wrap{flex:1;overflow:auto;}
-table{width:100%;border-collapse:collapse;}
-thead th{position:sticky;top:0;background:var(--surf);padding:9px 12px;text-align:left;font-size:10px;color:var(--tm);text-transform:uppercase;letter-spacing:.8px;font-weight:500;border-bottom:1px solid var(--bd);white-space:nowrap;user-select:none;}
+table{width:max-content;min-width:100%;border-collapse:collapse;}
+thead th:nth-child(2){position:sticky;top:0;left:0;z-index:30;background:#1E2D3D;}
+tbody td:nth-child(2){position:sticky;left:0;z-index:5;background:#111F30;box-shadow:3px 0 6px rgba(0,0,0,0.25);}
+tbody tr:hover td:nth-child(2){background:#162438;}
+tbody tr.row-selected td:nth-child(2){background:#1a2d3e;}
+thead th{position:sticky;top:0;z-index:10;background:var(--surf);padding:9px 12px;text-align:left;font-size:10px;color:var(--tm);text-transform:uppercase;letter-spacing:.8px;font-weight:500;border-bottom:1px solid var(--bd);white-space:nowrap;user-select:none;}
 tbody tr{border-bottom:1px solid rgba(201,168,76,0.07);}
 tbody tr:hover{background:rgba(201,168,76,0.04);}
 tbody td{padding:0;vertical-align:middle;font-size:13px;position:relative;}
@@ -698,17 +702,17 @@ html.is-ipad .modal { width: 70vw !important; max-width: 600px; }
           <thead>
             <tr>
               <th id="checkboxHeaderCell" class="checkbox-col" style="width:36px;display:none">&nbsp;</th>
-              <th style="width:140px">案件名稱</th>
-              <th style="width:130px">法院／檢察署</th>
-              <th style="width:108px">狀態</th>
-              <th style="width:90px">負責人</th>
-              <th style="width:110px">開庭日</th>
-              <th style="width:110px">工作截止日</th>
-              <th>進行概述</th>
-              <th style="width:140px">案號</th>
+              <th style="width:180px">案件名稱</th>
+              <th style="width:90px">法院／檢察署</th>
+              <th style="width:100px;text-align:center">狀態</th>
+              <th style="width:80px;text-align:center">負責人</th>
+              <th style="width:100px;text-align:center">開庭日</th>
+              <th style="width:100px;text-align:center">工作截止日</th>
+              <th style="width:275px">進行概述</th>
+              <th style="width:155px">案號</th>
               <th style="width:48px">股別</th>
-              <th style="width:145px">電話</th>
-              <th style="width:58px">分機</th>
+              <th style="width:140px">電話</th>
+              <th style="width:52px">分機</th>
               <th style="width:44px"></th>
             </tr>
           </thead>
@@ -1261,6 +1265,8 @@ function activateTextCell(td,caseId,field){
   td.innerHTML='';
   let input;
   const textareaFields=['desc','name','courthouse','caseNum','courtStock'];
+  // 進行概述以外的欄位：Enter 儲存跳出，Shift+Enter 換行
+  const enterSavesFields=['name','courthouse','caseNum','courtStock','phone','ext'];
   if(textareaFields.includes(field)){
     input=document.createElement('textarea');
     input.className='ita';
@@ -1271,8 +1277,29 @@ function activateTextCell(td,caseId,field){
     input.className='ii';
   }
   input.value=caseObj[field]||'';
+  var isComposing=false;
+  input.addEventListener('compositionstart',function(){ isComposing=true; });
+  input.addEventListener('compositionend',function(){ 
+    // 用 setTimeout 確保 keydown 先處理完再把 isComposing 設回 false
+    setTimeout(function(){ isComposing=false; }, 0);
+  });
   input.addEventListener('keydown',function(e){
-    if(e.key==='Escape'){commitActiveCell();renderCases();}
+    if(e.key==='Escape'){
+      commitActiveCell();renderCases();
+    } else if(e.key==='Enter' && enterSavesFields.includes(field)){
+      // e.isComposing 是瀏覽器原生屬性，isComposing 是我們自己的變數，兩個都檢查
+      if(isComposing || e.isComposing){
+        // 輸入法選字中，不做任何事
+        return;
+      } else if(e.shiftKey){
+        // Shift+Enter：換行
+        return;
+      } else {
+        // Enter：儲存並跳出
+        e.preventDefault();
+        commitActiveCell();renderCases();
+      }
+    }
   });
   input.addEventListener('blur',function(){
     setTimeout(function(){
@@ -1335,6 +1362,10 @@ function dlCls(d){
   const diff=(new Date(d)-new Date())/(86400000);
   return diff<0?'dl-u':diff<=7?'dl-s':'dl-o';
 }
+function isPast(d){
+  if(!d) return false;
+  return (new Date(d)-new Date()) < 0;
+}
 function getMemberName(id){
   if(!id) return '';
   const m=members.find(x=>x.id===id);
@@ -1382,18 +1413,18 @@ function renderCases(){
     return '<tr class="'+trClass+'" data-case-id="'+c.id+'">'+
     '<td class="checkbox-col tr1-cell" style="'+(selectMode?'':'display:none')+'">'+
       '<div class="cw" style="justify-content:center"><input type="checkbox" class="case-checkbox" data-id="'+c.id+'" '+(selectedCaseIds.includes(c.id)?'checked':'')+' style="width:18px;height:18px;accent-color:var(--gold);cursor:pointer;pointer-events:none"></div></td>'+`
-    <td class="ed" data-id="${c.id}" data-field="name" onclick="activateTextCell(this,'${c.id}','name')">
-      <div class="cw"><span class="ct${!c.name?' cm':''}">${c.name||'—'}</span></div></td>
-    <td class="ed" data-id="${c.id}" data-field="courthouse" onclick="activateTextCell(this,'${c.id}','courthouse')">
-      <div class="cw"><span class="ct${!c.courthouse?' cm':''}">${c.courthouse||'—'}</span></div></td>
+    <td class="ed" data-id="${c.id}" data-field="name" onclick="activateTextCell(this,'${c.id}','name')" style="width:180px">
+      <div class="cw"><span class="ct${!c.name?' cm':''}" style="white-space:pre-wrap;word-break:break-word;line-height:1.4">${c.name?c.name.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'):'—'}</span></div></td>
+    <td class="ed" data-id="${c.id}" data-field="courthouse" onclick="activateTextCell(this,'${c.id}','courthouse')" style="width:90px;max-width:90px">
+      <div class="cw"><span class="ct${!c.courthouse?' cm':''}" style="white-space:pre-wrap;word-break:break-word">${c.courthouse?c.courthouse.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'):'—'}</span></div></td>
     <td class="badge-cell" onclick="openStatusPopup(event,'${c.id}')">
-      <div class="cw">${badge(c.status)}</div></td>
+      <div class="cw" style="justify-content:center">${badge(c.status)}</div></td>
     <td class="person-cell" onclick="openPersonPopup(event,'${c.id}')">
-      <div class="cw">${renderPersonChips(c)}</div></td>
+      <div class="cw" style="justify-content:center">${renderPersonChips(c)}</div></td>
     <td class="date-cell ed" onclick="openCalendar(event,'${c.id}','court')">
-      <div class="cw"><span class="${dlCls(c.court)}">${fmtDate(c.court)||'<span class="cm">—</span>'}</span></div></td>
+      <div class="cw" style="justify-content:center"><span class="${dlCls(c.court)}" style="${isPast(c.court)?'text-decoration:line-through;text-decoration-color:currentColor;':''}">${fmtDate(c.court)||'<span class="cm">—</span>'}</span></div></td>
     <td class="date-cell ed" onclick="openCalendar(event,'${c.id}','deadline')">
-      <div class="cw"><span class="${dlCls(c.deadline)}">${fmtDate(c.deadline)||'<span class="cm">—</span>'}</span></div></td>
+      <div class="cw" style="justify-content:center"><span class="${dlCls(c.deadline)}" style="${isPast(c.deadline)?'text-decoration:line-through;text-decoration-color:currentColor;':''}">${fmtDate(c.deadline)||'<span class="cm">—</span>'}</span></div></td>
     <td class="ed desc-cell" data-id="${c.id}" data-field="desc" onclick="handleDescCellClick(event,this,'${c.id}')">
       <div class="cw"><span class="ct${!c.desc?' cm':''}" style="white-space:pre-wrap;line-height:1.5;word-break:break-word">${c.desc?c.desc.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'):'—'}</span></div></td>
     <td class="ed" data-id="${c.id}" data-field="caseNum" onclick="activateTextCell(this,'${c.id}','caseNum')">
@@ -1518,10 +1549,38 @@ function openDescEditor(caseId){
   ta.value = c.desc || '';
   var overlay = document.getElementById('descEditorOverlay');
   overlay.classList.add('show');
-  // Desktop (>1024px): no button, click outside or Escape closes
   var isDesktop = isDesktopMode();
   var closeBtn = document.getElementById('descEditorCloseBtn');
   closeBtn.style.display = isDesktop ? 'none' : 'inline-block';
+
+  // Remove old keydown listener if any, then add new one
+  if(ta._descKeyHandler) ta.removeEventListener('keydown', ta._descKeyHandler);
+  if(ta._descCompStart) ta.removeEventListener('compositionstart', ta._descCompStart);
+  if(ta._descCompEnd) ta.removeEventListener('compositionend', ta._descCompEnd);
+
+  var descIsComposing = false;
+  ta._descCompStart = function(){ descIsComposing = true; };
+  ta._descCompEnd = function(){ setTimeout(function(){ descIsComposing = false; }, 0); };
+  ta._descKeyHandler = function(e){
+    if(e.key === 'Escape'){
+      closeDescEditor();
+    } else if(e.key === 'Enter'){
+      if(descIsComposing || e.isComposing){
+        // 輸入法選字中，不做任何事
+        return;
+      } else if(e.shiftKey){
+        // Shift+Enter：換行，讓預設行為繼續
+        return;
+      } else {
+        // Enter：儲存並跳出
+        e.preventDefault();
+        closeDescEditor();
+      }
+    }
+  };
+  ta.addEventListener('compositionstart', ta._descCompStart);
+  ta.addEventListener('compositionend', ta._descCompEnd);
+  ta.addEventListener('keydown', ta._descKeyHandler);
   ta.focus();
 }
 function closeDescEditor(){
@@ -1568,10 +1627,10 @@ function handlePhoneCell(e, caseId){
 function renderPersonChips(c){
   const ids=c.personIds||(c.personId?[c.personId]:[]);
   if(!ids.length) return '<span class="cm">—</span>';
-  return ids.map(id=>{
+  return '<div style="display:flex;flex-direction:column;gap:3px;">'+ids.map(id=>{
     const m=members.find(x=>x.id===id);
-    return m?`<span class="pchip" style="margin:1px 2px">${m.name}</span>`:'';
-  }).filter(Boolean).join('');
+    return m?`<span class="pchip">${m.name}</span>`:'';
+  }).filter(Boolean).join('')+'</div>';
 }
 
 function renderPersonCheckboxes(selectedIds){
