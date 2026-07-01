@@ -195,37 +195,61 @@ tbody tr:hover .del-btn{opacity:1;}
   tbody td:nth-child(7) { display: none; }
 }
 
-/* Mobile (480px and below) - 全新卡片設計 v3 */
+/* Mobile (480px and below) - 全新卡片設計 v4（徹底重寫）*/
 @media (max-width: 480px) {
-  /* ── 全部容器撐滿螢幕寬度，修正偏左 ── */
+  /* 容器全寬、可捲動 */
   body { overflow: auto !important; height: auto !important; }
-  #app { height: auto !important; min-height: 100vh; overflow: visible !important; width: 100% !important; }
-  .layout { overflow: visible !important; height: auto !important; width: 100% !important; flex-direction: column !important; }
-  .main { overflow: visible !important; height: auto !important; width: 100% !important; flex: 1 1 100% !important; max-width: 100% !important; }
+  #app {
+    height: auto !important; min-height: 100vh;
+    overflow: visible !important; width: 100% !important;
+  }
+  .layout {
+    overflow: visible !important; height: auto !important;
+    width: 100% !important; flex-direction: column !important;
+  }
+  .main {
+    overflow: visible !important; height: auto !important;
+    width: 100% !important; flex: 1 1 100% !important; max-width: 100% !important;
+  }
   .table-wrap { overflow: visible !important; height: auto !important; width: 100% !important; }
   .header, .topnav, .toolbar, .stats-row { width: 100% !important; box-sizing: border-box; }
 
-  /* ── 上方功能列（與卡片比例一致）── */
-  .header { height: 60px; padding: 0 14px; }
+  /* ── 最上方 Header：避開手機系統列（瀏海/動態島）── */
+  .header {
+    height: auto;
+    min-height: 56px;
+    padding-top: calc(env(safe-area-inset-top, 0px) + 10px);
+    padding-bottom: 10px;
+    padding-left: 14px;
+    padding-right: 14px;
+  }
   .logo-img { width: 38px; height: 38px; }
   .logo-name { font-size: 15px; letter-spacing: 0.5px; }
   .logo-sub { font-size: 9px; }
+  .header-center { display: none !important; }
 
+  /* ── 頂部功能列 ── */
   .topnav { height: auto; padding: 8px 14px; gap: 6px; flex-wrap: wrap; }
   .tn-btn { font-size: 14px; padding: 6px 12px; }
   .tn-add { font-size: 14px; }
   .m-count { display: none; }
 
+  /* ── 工具列 ── */
   .toolbar { padding: 10px 14px; flex-wrap: wrap; gap: 8px; }
   .page-title { font-size: 17px; }
   .search-box { width: 100%; }
 
+  /* ── 統計列 ── */
   .stats-row { flex-wrap: nowrap; }
-  .stat-box { flex: 1; min-width: 0; padding: 10px 6px; border-right: 1px solid var(--bd) !important; border-bottom: none !important; text-align: center; }
+  .stat-box {
+    flex: 1; min-width: 0; padding: 10px 6px;
+    border-right: 1px solid var(--bd) !important; border-bottom: none !important;
+    text-align: center;
+  }
   .stat-num { font-size: 22px; }
   .stat-lbl { font-size: 11px; }
 
-  /* ── 卡片 ── */
+  /* ══ 卡片 ══ */
   table, thead, tbody, tr, td, th { display: block !important; }
   thead { display: none !important; }
 
@@ -252,11 +276,8 @@ tbody tr:hover .del-btn{opacity:1;}
   }
 
   tbody td {
-    padding: 0 !important;
-    border: none !important;
-    width: auto !important;
-    max-width: none !important;
-    min-width: 0 !important;
+    padding: 0 !important; border: none !important;
+    width: auto !important; max-width: none !important; min-width: 0 !important;
   }
   tbody td .cw { padding: 0 !important; min-height: auto !important; display: block; }
 
@@ -264,44 +285,38 @@ tbody tr:hover .del-btn{opacity:1;}
   tbody td.checkbox-col { display: none !important; }
   body.select-mode-on tbody tr { position: relative; }
   body.select-mode-on tbody td.checkbox-col {
-    display: block !important;
-    position: absolute; top: 12px; right: 12px;
+    display: block !important; position: absolute; top: 12px; right: 12px;
   }
 
-  /* 欄位定位 */
-  tbody td:nth-child(2)  { grid-area: name; }      /* 案件名稱 */
-  tbody td:nth-child(3)  { grid-area: chouse; }    /* 法院檢察署 */
-  tbody td:nth-child(4)  { grid-area: status; }    /* 狀態 */
-  tbody td:nth-child(5)  { grid-area: person; }    /* 負責人 */
-  tbody td:nth-child(6)  { grid-area: court; }     /* 開庭日 */
-  tbody td:nth-child(7)  { grid-area: deadline; }  /* 工作截止日 */
-  tbody td:nth-child(8)  { grid-area: desc; }      /* 進行概述 */
-  tbody td:nth-child(9)  { grid-area: casenum; }   /* 案號 */
-  tbody td:nth-child(10) { grid-area: stock; }     /* 股別 */
-  tbody td:nth-child(11) { grid-area: phone; }     /* 電話 */
-  tbody td:nth-child(12) { grid-area: ext; }       /* 分機 */
-  tbody td:nth-child(13) { display: none !important; } /* 刪除鈕 */
+  /* 欄位定位（td 實際位置）*/
+  tbody td:nth-child(2)  { grid-area: name; }
+  tbody td:nth-child(3)  { grid-area: chouse; }
+  tbody td:nth-child(4)  { grid-area: status; }
+  tbody td:nth-child(5)  { grid-area: person; }
+  tbody td:nth-child(6)  { grid-area: court; }
+  tbody td:nth-child(7)  { grid-area: deadline; }
+  tbody td:nth-child(8)  { grid-area: desc; }
+  tbody td:nth-child(9)  { grid-area: casenum; }
+  tbody td:nth-child(10) { grid-area: stock; }
+  tbody td:nth-child(11) { grid-area: phone; }
+  tbody td:nth-child(12) { grid-area: ext; }
+  tbody td:nth-child(13) { display: none !important; }
 
-  /* 第一排 案件名稱：置中大字，不顯示標籤 */
+  /* 第1排 案件名稱：置中大字，無標籤 */
   tbody td:nth-child(2) { text-align: center; }
   tbody td:nth-child(2) .cw { text-align: center; }
   tbody td:nth-child(2) .ct {
-    font-size: 18px !important;
-    font-weight: 700;
-    color: var(--t1);
-    white-space: normal;
-    line-height: 1.35;
+    font-size: 18px !important; font-weight: 700;
+    color: var(--t1); white-space: normal; line-height: 1.35;
   }
 
-  /* 第二排 法院檢察署：置中，不顯示標籤，直接內文 */
+  /* 第2排 法院檢察署：置中，直接內文無標籤 */
   tbody td:nth-child(3) { text-align: center; }
   tbody td:nth-child(3) .cw { text-align: center; }
   tbody td:nth-child(3)::before { display: none !important; content: "" !important; }
   tbody td:nth-child(3) .ct {
-    font-size: 17px !important;
-    font-weight: 500;
-    color: var(--t1);
-    white-space: nowrap;
+    font-size: 17px !important; font-weight: 500;
+    color: var(--t1); white-space: nowrap;
   }
 
   /* 其他欄位標籤 */
@@ -323,10 +338,7 @@ tbody tr:hover .del-btn{opacity:1;}
   tbody td:nth-child(10)::before,
   tbody td:nth-child(11)::before,
   tbody td:nth-child(12)::before {
-    display: block;
-    font-size: 13px;
-    color: var(--tm);
-    margin-bottom: 3px;
+    display: block; font-size: 13px; color: var(--tm); margin-bottom: 3px;
   }
 
   /* 內容文字 */
@@ -334,33 +346,23 @@ tbody tr:hover .del-btn{opacity:1;}
 
   /* 負責人 chip 左右並排 */
   tbody td:nth-child(5) .cw > div {
-    flex-direction: row !important;
-    flex-wrap: wrap;
-    gap: 5px !important;
+    flex-direction: row !important; flex-wrap: wrap; gap: 5px !important;
   }
 
-  /* 進行概述：完整區塊，上分隔線 */
+  /* 第7排 進行概述：完整，上分隔線 */
   tbody td:nth-child(8) {
-    margin-top: 3px;
-    padding-top: 10px !important;
+    margin-top: 3px; padding-top: 10px !important;
     border-top: 1px solid rgba(201,168,76,0.12);
   }
   tbody td:nth-child(8) .ct {
-    white-space: pre-wrap;
-    line-height: 1.6;
-    font-size: 16px;
-    color: var(--t2);
+    white-space: pre-wrap; line-height: 1.6; font-size: 16px; color: var(--t2);
   }
 
-  /* Modal */
+  /* Modal / Calendar / Popups */
   .modal { width: 95vw !important; max-height: 85vh; overflow-y: auto; }
   .mbody { padding: 14px 16px; gap: 10px; }
   .form-row { grid-template-columns: 1fr !important; }
-
-  /* Calendar */
   .cal-popup { width: calc(100vw - 24px) !important; left: 12px !important; right: 12px; }
-
-  /* Status & Person popups 置中 */
   .status-popup, #personPopup {
     position: fixed !important;
     top: 50% !important; left: 50% !important;
