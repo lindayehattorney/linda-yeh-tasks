@@ -1357,18 +1357,19 @@ function activateTextCell(td,caseId,field){
       }
     }
   });
-  var scrollBefore = (document.querySelector('.table-wrap')||{}).scrollTop || 0;
   input.addEventListener('blur',function(){
     setTimeout(function(){
       if(activeCell&&activeCell.input===input){
         commitActiveCell();
         renderCases();
       }
-      // 方案三：收鍵盤後平滑捲回原位，讓被鍵盤遮住的部分自然回來
-      var wrap = document.querySelector('.table-wrap');
-      if(wrap){
-        wrap.scrollTo({top: scrollBefore, behavior: 'smooth'});
-      }
+      // 方案一：溫和重排，趁瀏覽器閒置時輕輕觸發，肉眼幾乎看不出來
+      requestAnimationFrame(function(){
+        requestAnimationFrame(function(){
+          var wrap = document.querySelector('.table-wrap');
+          if(wrap){ void wrap.offsetHeight; }
+        });
+      });
     },250);
   });
   activeCell={td,caseId,field,input};
