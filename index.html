@@ -623,6 +623,30 @@ html.is-ipad tbody td:nth-child(8) .ct {
   color: var(--t2);
 }
 
+/* 案件名稱編輯框：填滿卡片寬度、大字 */
+html.is-ipad tbody td:nth-child(2) textarea.ita,
+html.is-ipad tbody td:nth-child(2) input.ii {
+  width: 100% !important;
+  min-width: 100% !important;
+  box-sizing: border-box;
+  font-size: 22px !important;
+  font-weight: 600;
+  line-height: 1.3;
+  padding: 10px 12px;
+}
+/* 確保案件名稱 td 在編輯時撐滿整排 */
+html.is-ipad tbody td:nth-child(2) {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* 其他文字欄位編輯框在 iPad 上字體加大 */
+html.is-ipad tbody td textarea.ita,
+html.is-ipad tbody td input.ii {
+  font-size: 18px !important;
+  padding: 8px 10px;
+}
+
 html.is-ipad .stats-row { flex-wrap: nowrap; }
 html.is-ipad .stat-box { padding: 12px 18px; }
 html.is-ipad .modal { width: 72vw !important; max-width: 620px; }
