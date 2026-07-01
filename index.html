@@ -195,9 +195,9 @@ tbody tr:hover .del-btn{opacity:1;}
   tbody td:nth-child(7) { display: none; }
 }
 
-/* Mobile (480px and below) - 全新卡片設計 v2 */
+/* Mobile (480px and below) - 全新卡片設計 v3 */
 @media (max-width: 480px) {
-  /* 頁面可捲動 */
+  /* ── 全部容器撐滿螢幕寬度，修正偏左 ── */
   body { overflow: auto !important; height: auto !important; }
   #app { height: auto !important; min-height: 100vh; overflow: visible !important; width: 100% !important; }
   .layout { overflow: visible !important; height: auto !important; width: 100% !important; flex-direction: column !important; }
@@ -205,51 +205,49 @@ tbody tr:hover .del-btn{opacity:1;}
   .table-wrap { overflow: visible !important; height: auto !important; width: 100% !important; }
   .header, .topnav, .toolbar, .stats-row { width: 100% !important; box-sizing: border-box; }
 
-  /* Header */
-  .header { height: 56px; padding: 0 12px; }
-  .logo-img { width: 36px; height: 36px; }
+  /* ── 上方功能列（與卡片比例一致）── */
+  .header { height: 60px; padding: 0 14px; }
+  .logo-img { width: 38px; height: 38px; }
   .logo-name { font-size: 15px; letter-spacing: 0.5px; }
+  .logo-sub { font-size: 9px; }
 
-  /* Top nav 一行 */
-  .topnav { height: auto; padding: 6px 8px; gap: 4px; flex-wrap: wrap; }
+  .topnav { height: auto; padding: 8px 14px; gap: 6px; flex-wrap: wrap; }
   .tn-btn { font-size: 14px; padding: 6px 12px; }
-  .tn-add { font-size: 15px; }
+  .tn-add { font-size: 14px; }
   .m-count { display: none; }
-  .tn-divider { display: none; }
 
-  /* 統計列一行 */
-  .stats-row { flex-wrap: nowrap; overflow-x: visible; }
-  .stat-box { flex: 1; min-width: 0; padding: 8px 6px; border-right: 1px solid var(--bd) !important; border-bottom: none !important; }
-  .stat-num { font-size: 22px; }
-  .stat-lbl { font-size: 12px; }
-
-  /* Toolbar */
-  .toolbar { padding: 8px 12px; flex-wrap: wrap; gap: 8px; }
+  .toolbar { padding: 10px 14px; flex-wrap: wrap; gap: 8px; }
   .page-title { font-size: 17px; }
   .search-box { width: 100%; }
 
-  /* ── 卡片式排版 ── */
+  .stats-row { flex-wrap: nowrap; }
+  .stat-box { flex: 1; min-width: 0; padding: 10px 6px; border-right: 1px solid var(--bd) !important; border-bottom: none !important; text-align: center; }
+  .stat-num { font-size: 22px; }
+  .stat-lbl { font-size: 11px; }
+
+  /* ── 卡片 ── */
   table, thead, tbody, tr, td, th { display: block !important; }
   thead { display: none !important; }
 
   tbody tr {
     background: var(--navy-l);
     border: 1.5px solid rgba(201,168,76,0.2);
-    border-radius: 12px;
-    margin: 10px 10px;
-    padding: 14px 14px;
-    box-shadow: 0 3px 12px rgba(0,0,0,0.22);
+    border-radius: 14px;
+    margin: 12px 14px;
+    padding: 18px 18px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.25);
     display: grid !important;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
     grid-template-areas:
-      "name     name     name"
-      "status   person   person"
-      "court    court    deadline"
-      "casenum  casenum  stock"
-      "chouse   phone    ext"
-      "desc     desc     desc";
-    column-gap: 10px;
-    row-gap: 10px;
+      "name     name"
+      "chouse   chouse"
+      "status   person"
+      "court    deadline"
+      "casenum  stock"
+      "phone    ext"
+      "desc     desc";
+    column-gap: 12px;
+    row-gap: 14px;
     align-items: start;
   }
 
@@ -262,7 +260,7 @@ tbody tr:hover .del-btn{opacity:1;}
   }
   tbody td .cw { padding: 0 !important; min-height: auto !important; display: block; }
 
-  /* 隱藏 checkbox（多選時顯示） */
+  /* checkbox 只在多選模式顯示 */
   tbody td.checkbox-col { display: none !important; }
   body.select-mode-on tbody tr { position: relative; }
   body.select-mode-on tbody td.checkbox-col {
@@ -284,19 +282,29 @@ tbody tr:hover .del-btn{opacity:1;}
   tbody td:nth-child(12) { grid-area: ext; }       /* 分機 */
   tbody td:nth-child(13) { display: none !important; } /* 刪除鈕 */
 
-  /* 案件名稱：置中大字 */
-  tbody td:nth-child(2) { text-align: center; margin-bottom: 4px; }
+  /* 第一排 案件名稱：置中大字，不顯示標籤 */
+  tbody td:nth-child(2) { text-align: center; }
   tbody td:nth-child(2) .cw { text-align: center; }
   tbody td:nth-child(2) .ct {
-    font-size: 20px !important;
+    font-size: 18px !important;
     font-weight: 700;
     color: var(--t1);
     white-space: normal;
     line-height: 1.35;
   }
 
-  /* 欄位標籤 */
-  tbody td:nth-child(3)::before  { content: "法院／檢察署"; }
+  /* 第二排 法院檢察署：置中，不顯示標籤，直接內文 */
+  tbody td:nth-child(3) { text-align: center; }
+  tbody td:nth-child(3) .cw { text-align: center; }
+  tbody td:nth-child(3)::before { display: none !important; content: "" !important; }
+  tbody td:nth-child(3) .ct {
+    font-size: 17px !important;
+    font-weight: 500;
+    color: var(--t1);
+    white-space: nowrap;
+  }
+
+  /* 其他欄位標籤 */
   tbody td:nth-child(4)::before  { content: "狀態"; }
   tbody td:nth-child(5)::before  { content: "負責人"; }
   tbody td:nth-child(6)::before  { content: "開庭日"; }
@@ -306,7 +314,6 @@ tbody tr:hover .del-btn{opacity:1;}
   tbody td:nth-child(10)::before { content: "股別"; }
   tbody td:nth-child(11)::before { content: "電話"; }
   tbody td:nth-child(12)::before { content: "分機"; }
-  tbody td:nth-child(3)::before,
   tbody td:nth-child(4)::before,
   tbody td:nth-child(5)::before,
   tbody td:nth-child(6)::before,
@@ -317,31 +324,31 @@ tbody tr:hover .del-btn{opacity:1;}
   tbody td:nth-child(11)::before,
   tbody td:nth-child(12)::before {
     display: block;
-    font-size: 14px;
+    font-size: 13px;
     color: var(--tm);
-    margin-bottom: 3px;
+    margin-bottom: 4px;
   }
 
   /* 內容文字 */
-  tbody td .ct, tbody td .cw span, tbody td a { font-size: 18px; }
+  tbody td .ct, tbody td .cw span, tbody td a { font-size: 16px; }
 
   /* 負責人 chip 左右並排 */
   tbody td:nth-child(5) .cw > div {
     flex-direction: row !important;
     flex-wrap: wrap;
-    gap: 4px !important;
+    gap: 5px !important;
   }
 
   /* 進行概述：完整區塊，上分隔線 */
   tbody td:nth-child(8) {
     margin-top: 4px;
-    padding-top: 12px !important;
+    padding-top: 14px !important;
     border-top: 1px solid rgba(201,168,76,0.12);
   }
   tbody td:nth-child(8) .ct {
     white-space: pre-wrap;
     line-height: 1.6;
-    font-size: 18px;
+    font-size: 16px;
     color: var(--t2);
   }
 
@@ -353,7 +360,7 @@ tbody tr:hover .del-btn{opacity:1;}
   /* Calendar */
   .cal-popup { width: calc(100vw - 24px) !important; left: 12px !important; right: 12px; }
 
-  /* Status & Person popups: 置中 */
+  /* Status & Person popups 置中 */
   .status-popup, #personPopup {
     position: fixed !important;
     top: 50% !important; left: 50% !important;
