@@ -217,9 +217,8 @@ tbody tr:hover .del-btn{opacity:1;}
   .tn-divider { display: none; }
 
   /* 統計列一行 */
-  .stats-row { flex-wrap: nowrap; overflow-x: auto; }
-  .stat-box { flex: 1; min-width: 70px; padding: 8px 6px; border-right: 1px solid var(--bd) !important; border-bottom: none !important; text-align: center; }
-  .stat-box .stat-num, .stat-box .stat-lbl { text-align: center; }
+  .stats-row { flex-wrap: nowrap; overflow-x: visible; }
+  .stat-box { flex: 1; min-width: 0; padding: 8px 6px; border-right: 1px solid var(--bd) !important; border-bottom: none !important; }
   .stat-num { font-size: 16px; }
   .stat-lbl { font-size: 9px; }
 
@@ -288,7 +287,7 @@ tbody tr:hover .del-btn{opacity:1;}
   tbody td:nth-child(2) { text-align: center; margin-bottom: 4px; }
   tbody td:nth-child(2) .cw { text-align: center; }
   tbody td:nth-child(2) .ct {
-    font-size: 18px !important;
+    font-size: 23px !important;
     font-weight: 700;
     color: var(--t1);
     white-space: normal;
@@ -317,54 +316,13 @@ tbody tr:hover .del-btn{opacity:1;}
   tbody td:nth-child(11)::before,
   tbody td:nth-child(12)::before {
     display: block;
-    font-size: 10px;
+    font-size: 13px;
     color: var(--tm);
     margin-bottom: 3px;
   }
 
   /* 內容文字 */
-  tbody td .ct, tbody td .cw span, tbody td a { font-size: 13px; }
-
-  /* 所有欄位置中對齊（進行概述除外） */
-  tbody td:nth-child(4),
-  tbody td:nth-child(5),
-  tbody td:nth-child(6),
-  tbody td:nth-child(7),
-  tbody td:nth-child(9),
-  tbody td:nth-child(10),
-  tbody td:nth-child(3),
-  tbody td:nth-child(11),
-  tbody td:nth-child(12) {
-    text-align: center;
-  }
-  tbody td:nth-child(4) .cw,
-  tbody td:nth-child(5) .cw,
-  tbody td:nth-child(6) .cw,
-  tbody td:nth-child(7) .cw,
-  tbody td:nth-child(9) .cw,
-  tbody td:nth-child(10) .cw,
-  tbody td:nth-child(3) .cw,
-  tbody td:nth-child(11) .cw,
-  tbody td:nth-child(12) .cw {
-    text-align: center;
-    justify-content: center;
-  }
-  tbody td:nth-child(4)::before,
-  tbody td:nth-child(5)::before,
-  tbody td:nth-child(6)::before,
-  tbody td:nth-child(7)::before,
-  tbody td:nth-child(9)::before,
-  tbody td:nth-child(10)::before,
-  tbody td:nth-child(3)::before,
-  tbody td:nth-child(11)::before,
-  tbody td:nth-child(12)::before {
-    text-align: center;
-  }
-  /* 狀態 badge 和負責人 chip 置中 */
-  tbody td:nth-child(4) .cw { display: flex; justify-content: center; }
-  tbody td:nth-child(5) .cw > div { justify-content: center !important; }
-  /* 電話連結置中 */
-  tbody td:nth-child(11) .cw a { justify-content: center; }
+  tbody td .ct, tbody td .cw span, tbody td a { font-size: 16px; }
 
   /* 負責人 chip 左右並排 */
   tbody td:nth-child(5) .cw > div {
@@ -382,7 +340,7 @@ tbody tr:hover .del-btn{opacity:1;}
   tbody td:nth-child(8) .ct {
     white-space: pre-wrap;
     line-height: 1.55;
-    font-size: 13px;
+    font-size: 16px;
     color: var(--t2);
   }
 
