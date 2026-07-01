@@ -490,26 +490,25 @@ tr.select-row.row-selected:hover {
 
 
 /* ══════════════════════════════════════════
-   iPad 平板版卡片設計（全新）
+   iPad 平板版卡片設計 v2（重寫，標題對應資料）
    ══════════════════════════════════════════ */
 
-/* 表格轉為卡片容器 */
 html.is-ipad table { display: block; width: 100%; }
 html.is-ipad thead { display: none; }
 html.is-ipad tbody { display: block; }
 html.is-ipad .table-wrap { overflow-x: hidden; overflow-y: auto; }
 
-/* 每個案件 = 一張卡片 */
+/* 每個案件 = 一張卡片，5欄網格 */
 html.is-ipad tbody tr:has(td.checkbox-col) {
   display: grid;
-  grid-template-columns: 96px 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 110px;
   grid-template-areas:
-    "status  name     name     name"
-    "chouse  person   court    deadline"
-    "stock   casenum  phone    ext"
-    "desc    desc     desc     desc";
+    "name     name     name     name     name"
+    "chouse   person   court    deadline deadline"
+    "stock    casenum  phone    ext      status"
+    "desc     desc     desc     desc     desc";
   column-gap: 18px;
-  row-gap: 14px;
+  row-gap: 16px;
   align-items: start;
   background: var(--navy-l);
   border: 1.5px solid rgba(201,168,76,0.22);
@@ -518,55 +517,50 @@ html.is-ipad tbody tr:has(td.checkbox-col) {
   padding: 22px 24px;
   box-shadow: 0 6px 20px rgba(0,0,0,0.28);
 }
-html.is-ipad tbody tr:hover { background: var(--navy-l); }
 
-/* 所有格子基本樣式 */
 html.is-ipad tbody td {
   display: block;
   padding: 0;
   border: none;
   min-width: 0;
 }
-html.is-ipad tbody td .cw {
-  padding: 0;
-  min-height: auto;
-  display: block;
-}
+html.is-ipad tbody td .cw { padding: 0; min-height: auto; display: block; }
 
-/* 隱藏 checkbox（多選模式才顯示） */
+/* checkbox 只在多選模式顯示 */
 html.is-ipad tbody td.checkbox-col { display: none; }
 html.is-ipad body.select-mode-on tbody tr { position: relative; }
 html.is-ipad body.select-mode-on tbody td.checkbox-col {
-  display: block;
-  position: absolute;
-  top: 16px; right: 16px;
+  display: block; position: absolute; top: 16px; right: 16px;
 }
 
-/* 欄位定位 */
-html.is-ipad tbody td:nth-child(2)  { grid-area: name; }        /* 案件名稱 */
-html.is-ipad tbody td:nth-child(3)  { grid-area: chouse; }      /* 法院檢察署 */
-html.is-ipad tbody td:nth-child(4)  { grid-area: status; }      /* 狀態 */
-html.is-ipad tbody td:nth-child(5)  { grid-area: person; }      /* 負責人 */
-html.is-ipad tbody td:nth-child(6)  { grid-area: court; }       /* 開庭日 */
-html.is-ipad tbody td:nth-child(7)  { grid-area: deadline; }    /* 工作截止日 */
-html.is-ipad tbody td:nth-child(8)  { grid-area: desc; }        /* 進行概述 */
-html.is-ipad tbody td:nth-child(9)  { grid-area: stock; }       /* 股別 */
-html.is-ipad tbody td:nth-child(10) { grid-area: casenum; }     /* 案號 */
-html.is-ipad tbody td:nth-child(11) { grid-area: phone; }       /* 電話 */
-html.is-ipad tbody td:nth-child(12) { grid-area: ext; }         /* 分機 */
-html.is-ipad tbody td:nth-child(13) { display: none; }          /* 刪除鈕先隱藏 */
+/* ── 欄位定位（td 實際位置 → 版面區域）── */
+html.is-ipad tbody td:nth-child(2)  { grid-area: name; }      /* 案件名稱 */
+html.is-ipad tbody td:nth-child(3)  { grid-area: chouse; }    /* 法院檢察署 */
+html.is-ipad tbody td:nth-child(4)  { grid-area: status; }    /* 狀態 */
+html.is-ipad tbody td:nth-child(5)  { grid-area: person; }    /* 負責人 */
+html.is-ipad tbody td:nth-child(6)  { grid-area: court; }     /* 開庭日 */
+html.is-ipad tbody td:nth-child(7)  { grid-area: deadline; }  /* 工作截止日 */
+html.is-ipad tbody td:nth-child(8)  { grid-area: desc; }      /* 進行概述 */
+html.is-ipad tbody td:nth-child(9)  { grid-area: casenum; }   /* 案號 */
+html.is-ipad tbody td:nth-child(10) { grid-area: stock; }     /* 股別 */
+html.is-ipad tbody td:nth-child(11) { grid-area: phone; }     /* 電話 */
+html.is-ipad tbody td:nth-child(12) { grid-area: ext; }       /* 分機 */
+html.is-ipad tbody td:nth-child(13) { display: none; }        /* 刪除鈕 */
 
-/* 欄位標籤（在內容上方的小灰字） */
+/* ── 欄位標籤（對應正確資料）── */
 html.is-ipad tbody td:nth-child(3)::before  { content: "法院／檢察署"; }
 html.is-ipad tbody td:nth-child(5)::before  { content: "負責人"; }
 html.is-ipad tbody td:nth-child(6)::before  { content: "開庭日"; }
 html.is-ipad tbody td:nth-child(7)::before  { content: "工作截止日"; }
 html.is-ipad tbody td:nth-child(8)::before  { content: "進行概述"; }
-html.is-ipad tbody td:nth-child(9)::before  { content: "股別"; }
-html.is-ipad tbody td:nth-child(10)::before { content: "案號"; }
+html.is-ipad tbody td:nth-child(9)::before  { content: "案號"; }
+html.is-ipad tbody td:nth-child(10)::before { content: "股別"; }
 html.is-ipad tbody td:nth-child(11)::before { content: "電話"; }
 html.is-ipad tbody td:nth-child(12)::before { content: "分機"; }
+html.is-ipad tbody td:nth-child(4)::before  { content: "狀態"; }
+
 html.is-ipad tbody td:nth-child(3)::before,
+html.is-ipad tbody td:nth-child(4)::before,
 html.is-ipad tbody td:nth-child(5)::before,
 html.is-ipad tbody td:nth-child(6)::before,
 html.is-ipad tbody td:nth-child(7)::before,
@@ -582,11 +576,8 @@ html.is-ipad tbody td:nth-child(12)::before {
   font-weight: 400;
 }
 
-/* 案件名稱：大字、不換行、向右延伸 */
-html.is-ipad tbody td:nth-child(2) {
-  align-self: center;
-  overflow: visible;
-}
+/* ── 案件名稱：標題列，橫向延伸 ── */
+html.is-ipad tbody td:nth-child(2) { overflow: visible; margin-bottom: 4px; }
 html.is-ipad tbody td:nth-child(2) .cw { overflow: visible; }
 html.is-ipad tbody td:nth-child(2) .ct {
   font-size: 24px;
@@ -597,26 +588,18 @@ html.is-ipad tbody td:nth-child(2) .ct {
   line-height: 1.3;
 }
 
-/* 狀態：置左、垂直置中 */
-html.is-ipad tbody td:nth-child(4) {
-  align-self: center;
-}
-html.is-ipad tbody td:nth-child(4) .cw { justify-content: flex-start; }
-
-/* 內容文字大小 */
+/* ── 內容文字 ── */
 html.is-ipad tbody td .ct,
 html.is-ipad tbody td .cw span,
-html.is-ipad tbody td a {
-  font-size: 18px;
-}
+html.is-ipad tbody td a { font-size: 18px; }
 
 /* 法院檢察署：不換行 */
-html.is-ipad tbody td:nth-child(3) .ct {
-  white-space: nowrap;
-  overflow: visible;
-}
+html.is-ipad tbody td:nth-child(3) .ct { white-space: nowrap; overflow: visible; }
 
-/* 負責人 chip：左右並排 */
+/* 案號：完整顯示 */
+html.is-ipad tbody td:nth-child(9) .ct { white-space: nowrap; overflow: visible; }
+
+/* 負責人 chip 左右並排 */
 html.is-ipad tbody td:nth-child(5) .cw > div {
   flex-direction: row !important;
   flex-wrap: wrap;
@@ -624,13 +607,10 @@ html.is-ipad tbody td:nth-child(5) .cw > div {
   justify-content: flex-start;
 }
 
-/* 案號：完整顯示不截斷 */
-html.is-ipad tbody td:nth-child(10) .ct {
-  white-space: nowrap;
-  overflow: visible;
-}
+/* 狀態：靠左 */
+html.is-ipad tbody td:nth-child(4) .cw { justify-content: flex-start; }
 
-/* 進行概述：完整區塊、上方分隔線 */
+/* 進行概述：完整區塊，上分隔線 */
 html.is-ipad tbody td:nth-child(8) {
   margin-top: 6px;
   padding-top: 14px;
@@ -643,11 +623,8 @@ html.is-ipad tbody td:nth-child(8) .ct {
   color: var(--t2);
 }
 
-/* 統計列一行 */
 html.is-ipad .stats-row { flex-wrap: nowrap; }
 html.is-ipad .stat-box { padding: 12px 18px; }
-
-/* Modal 寬度 */
 html.is-ipad .modal { width: 72vw !important; max-width: 620px; }
 
 </style>
