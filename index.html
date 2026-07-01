@@ -1424,7 +1424,7 @@ function renderCases(){
     '<td class="checkbox-col tr1-cell" style="'+(selectMode?'':'display:none')+'">'+
       '<div class="cw" style="justify-content:center"><input type="checkbox" class="case-checkbox" data-id="'+c.id+'" '+(selectedCaseIds.includes(c.id)?'checked':'')+' style="width:18px;height:18px;accent-color:var(--gold);cursor:pointer;pointer-events:none"></div></td>'+`
     <td class="ed" data-id="${c.id}" data-field="name" onclick="activateTextCell(this,'${c.id}','name')" style="width:180px">
-      <div class="cw"><span class="ct${!c.name?' cm':''}" style="white-space:pre-wrap;word-break:break-word;line-height:1.4">${c.name?c.name.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'):'—'}</span></div></td>
+      <div class="cw"><span class="ct${!c.name?' cm':''}" style="white-space:pre-wrap;word-break:break-word;line-height:1.4">${c.name?(window.innerWidth<=1024?c.name.replace(/[\n\r]+/g,' ').trim():c.name).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'):'—'}</span></div></td>
     <td class="ed" data-id="${c.id}" data-field="courthouse" onclick="activateTextCell(this,'${c.id}','courthouse')" style="width:90px;max-width:90px">
       <div class="cw"><span class="ct${!c.courthouse?' cm':''}" style="white-space:pre-wrap;word-break:break-word">${c.courthouse?(window.innerWidth<=1024?c.courthouse.replace(/[\n\r]+/g,' ').trim():c.courthouse).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'):'—'}</span></div></td>
     <td class="badge-cell" onclick="openStatusPopup(event,'${c.id}')">
