@@ -211,7 +211,8 @@ tbody tr:hover .del-btn{opacity:1;}
     overflow: visible !important; height: auto !important;
     width: 100% !important; flex: 1 1 100% !important; max-width: 100% !important;
   }
-  .table-wrap { overflow: visible !important; height: auto !important; width: 100% !important; }
+  .table-wrap { overflow: hidden !important; height: auto !important; width: 100% !important; }
+  table, tbody { width: 100% !important; max-width: 100% !important; }
   .header, .topnav, .toolbar, .stats-row { width: 100% !important; box-sizing: border-box; }
 
   /* ── 最上方 Header：避開手機系統列（瀏海/動態島）── */
@@ -260,6 +261,10 @@ tbody tr:hover .del-btn{opacity:1;}
     margin: 9px 11px;
     padding: 13px 14px;
     box-shadow: 0 3px 10px rgba(0,0,0,0.22);
+    box-sizing: border-box;
+    width: auto !important;
+    max-width: calc(100vw - 22px) !important;
+    overflow: hidden;
     display: grid !important;
     grid-template-columns: 1fr 1fr;
     grid-template-areas:
@@ -277,7 +282,13 @@ tbody tr:hover .del-btn{opacity:1;}
 
   tbody td {
     padding: 0 !important; border: none !important;
-    width: auto !important; max-width: none !important; min-width: 0 !important;
+    width: auto !important; max-width: 100% !important; min-width: 0 !important;
+    overflow: hidden;
+  }
+  tbody td .cw, tbody td .ct {
+    max-width: 100% !important;
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
   tbody td .cw { padding: 0 !important; min-height: auto !important; display: block; }
 
@@ -308,6 +319,7 @@ tbody tr:hover .del-btn{opacity:1;}
   tbody td:nth-child(2) .ct {
     font-size: 18px !important; font-weight: 700;
     color: var(--t1); white-space: normal; line-height: 1.35;
+    overflow-wrap: break-word; word-break: break-word;
   }
 
   /* 第2排 法院檢察署：置中，直接內文無標籤 */
@@ -316,7 +328,8 @@ tbody tr:hover .del-btn{opacity:1;}
   tbody td:nth-child(3)::before { display: none !important; content: "" !important; }
   tbody td:nth-child(3) .ct {
     font-size: 17px !important; font-weight: 500;
-    color: var(--t1); white-space: nowrap;
+    color: var(--t1); white-space: normal;
+    overflow-wrap: break-word; word-break: break-word;
   }
 
   /* 其他欄位標籤 */
@@ -356,6 +369,7 @@ tbody tr:hover .del-btn{opacity:1;}
   }
   tbody td:nth-child(8) .ct {
     white-space: pre-wrap; line-height: 1.6; font-size: 16px; color: var(--t2);
+    overflow-wrap: break-word; word-break: break-word; max-width: 100% !important;
   }
 
   /* Modal / Calendar / Popups */
