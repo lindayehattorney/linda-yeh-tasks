@@ -501,19 +501,20 @@ html.is-ipad .table-wrap { overflow-x: visible; overflow-y: auto; }
 
 html.is-ipad tbody tr:has(td.checkbox-col) {
   display: grid !important;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: 90px 1fr 1fr 1fr;
   grid-template-areas:
-    "name name name status"
+    "status name name name"
     "courthouse person court deadline"
     "casenum stock phone ext"
     "desc desc desc desc"
     "actions actions actions actions";
-  gap: 4px 16px;
+  gap: 6px 16px;
   background: var(--navy-l);
-  border: 1px solid var(--bd);
-  border-radius: var(--rl);
-  margin: 10px 16px;
-  padding: 18px 20px;
+  border: 1.5px solid rgba(201,168,76,0.25);
+  border-radius: 16px;
+  margin: 12px 16px;
+  padding: 20px 22px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
 }
 html.is-ipad tbody tr:hover { background: var(--surf-h); }
 
@@ -521,7 +522,7 @@ html.is-ipad tbody td {
   display: block !important;
   padding: 0 !important;
   border: none !important;
-  font-size: 15px;
+  font-size: 19px;
 }
 html.is-ipad tbody td .cw { padding: 4px 0 !important; min-height: auto !important; }
 
@@ -535,9 +536,9 @@ html.is-ipad body.select-mode-on td.checkbox-col {
 html.is-ipad body.select-mode-on tbody tr { position: relative; padding-right: 44px; }
 
 /* Grid area assignments by column position (1=checkbox,2=name,3=courthouse,4=status,5=person,6=court,7=deadline,8=desc,9=casenum,10=stock,11=phone,12=ext,13=actions) */
-html.is-ipad tbody td:nth-child(2)  { grid-area: name; background: transparent !important; box-shadow: none !important; }
+html.is-ipad tbody td:nth-child(2)  { grid-area: name; background: transparent !important; box-shadow: none !important; align-self: center; }
 html.is-ipad tbody td:nth-child(3)  { grid-area: courthouse; }
-html.is-ipad tbody td:nth-child(4)  { grid-area: status; justify-self: end; }
+html.is-ipad tbody td:nth-child(4)  { grid-area: status; justify-self: start; align-self: center; }
 html.is-ipad tbody td:nth-child(5)  { grid-area: person; }
 html.is-ipad tbody td:nth-child(5) div[style] { flex-direction: row !important; flex-wrap: wrap; gap: 4px !important; }
 html.is-ipad tbody td:nth-child(6)  { grid-area: court; }
@@ -570,14 +571,14 @@ html.is-ipad tbody td:nth-child(10)::before,
 html.is-ipad tbody td:nth-child(11)::before,
 html.is-ipad tbody td:nth-child(12)::before {
   display: block;
-  font-size: 12px;
+  font-size: 15px;
   color: var(--tm);
-  margin-bottom: 3px;
+  margin-bottom: 4px;
 }
 
 /* Case name styling - large title */
 html.is-ipad tbody td:nth-child(2) .ct {
-  font-size: 20px;
+  font-size: 25px;
   font-weight: 600;
   color: var(--t1);
   white-space: nowrap;
@@ -597,7 +598,7 @@ html.is-ipad tbody td:nth-child(8) {
 html.is-ipad tbody td:nth-child(8) .ct {
   white-space: pre-wrap;
   line-height: 1.6;
-  font-size: 15px;
+  font-size: 19px;
   color: var(--t2);
 }
 
