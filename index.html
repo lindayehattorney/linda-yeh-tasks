@@ -580,12 +580,15 @@ html.is-ipad tbody td:nth-child(2) .ct {
   font-size: 20px;
   font-weight: 600;
   color: var(--t1);
-  white-space: normal;
+  white-space: nowrap;
+}
+html.is-ipad tbody td:nth-child(2) {
+  grid-column: 1 / -1;
 }
 
 /* Courthouse */
 html.is-ipad tbody td:nth-child(3) .cw { padding-top: 0 !important; }
-html.is-ipad tbody td:nth-child(3) .ct { white-space: nowrap !important; overflow: hidden; text-overflow: ellipsis; }
+html.is-ipad tbody td:nth-child(3) .ct { white-space: nowrap !important; overflow: visible; text-overflow: clip; }
 
 /* Desc block - full width, distinct background */
 html.is-ipad tbody td:nth-child(8) {
