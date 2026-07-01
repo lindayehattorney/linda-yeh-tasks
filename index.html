@@ -218,7 +218,8 @@ tbody tr:hover .del-btn{opacity:1;}
 
   /* 統計列一行 */
   .stats-row { flex-wrap: nowrap; overflow-x: auto; }
-  .stat-box { flex: 0 0 auto; min-width: 70px; padding: 8px 10px; border-right: 1px solid var(--bd) !important; border-bottom: none !important; }
+  .stat-box { flex: 1; min-width: 70px; padding: 8px 6px; border-right: 1px solid var(--bd) !important; border-bottom: none !important; text-align: center; }
+  .stat-box .stat-num, .stat-box .stat-lbl { text-align: center; }
   .stat-num { font-size: 16px; }
   .stat-lbl { font-size: 9px; }
 
@@ -323,6 +324,47 @@ tbody tr:hover .del-btn{opacity:1;}
 
   /* 內容文字 */
   tbody td .ct, tbody td .cw span, tbody td a { font-size: 13px; }
+
+  /* 所有欄位置中對齊（進行概述除外） */
+  tbody td:nth-child(4),
+  tbody td:nth-child(5),
+  tbody td:nth-child(6),
+  tbody td:nth-child(7),
+  tbody td:nth-child(9),
+  tbody td:nth-child(10),
+  tbody td:nth-child(3),
+  tbody td:nth-child(11),
+  tbody td:nth-child(12) {
+    text-align: center;
+  }
+  tbody td:nth-child(4) .cw,
+  tbody td:nth-child(5) .cw,
+  tbody td:nth-child(6) .cw,
+  tbody td:nth-child(7) .cw,
+  tbody td:nth-child(9) .cw,
+  tbody td:nth-child(10) .cw,
+  tbody td:nth-child(3) .cw,
+  tbody td:nth-child(11) .cw,
+  tbody td:nth-child(12) .cw {
+    text-align: center;
+    justify-content: center;
+  }
+  tbody td:nth-child(4)::before,
+  tbody td:nth-child(5)::before,
+  tbody td:nth-child(6)::before,
+  tbody td:nth-child(7)::before,
+  tbody td:nth-child(9)::before,
+  tbody td:nth-child(10)::before,
+  tbody td:nth-child(3)::before,
+  tbody td:nth-child(11)::before,
+  tbody td:nth-child(12)::before {
+    text-align: center;
+  }
+  /* 狀態 badge 和負責人 chip 置中 */
+  tbody td:nth-child(4) .cw { display: flex; justify-content: center; }
+  tbody td:nth-child(5) .cw > div { justify-content: center !important; }
+  /* 電話連結置中 */
+  tbody td:nth-child(11) .cw a { justify-content: center; }
 
   /* 負責人 chip 左右並排 */
   tbody td:nth-child(5) .cw > div {
