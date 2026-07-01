@@ -1363,19 +1363,29 @@ function activateTextCell(td,caseId,field){
         commitActiveCell();
         renderCases();
       }
-      // 方案一：溫和重排，趁瀏覽器閒置時輕輕觸發，肉眼幾乎看不出來
-      requestAnimationFrame(function(){
-        requestAnimationFrame(function(){
-          var wrap = document.querySelector('.table-wrap');
-          if(wrap){ void wrap.offsetHeight; }
-        });
-      });
-    },250);
+      // 收起鍵盤後強制重新計算頁面高度，避免版面卡住
+      forceReflow();
+    },200);
   });
   activeCell={td,caseId,field,input};
   td.appendChild(input);
   input.focus();
 }
+function forceReflow(){
+  // 觸發瀏覽器重新計算佈局，修正平板收鍵盤後的版面問題
+  window.scrollTo(0, window.scrollY);
+  var wrap = document.querySelector('.table-wrap');
+  if(wrap){
+    var h = wrap.style.height;
+    wrap.style.height = 'auto';
+    // 強制讀取一次 offsetHeight 觸發 reflow
+    void wrap.offsetHeight;
+    wrap.style.height = h;
+  }
+  // iOS Safari：用一個微小的 resize 事件觸發重排
+  window.dispatchEvent(new Event('resize'));
+}
+
 function addNewCase(){
   // open add case modal
   document.getElementById('caseModalTitle').textContent='新增案件';
