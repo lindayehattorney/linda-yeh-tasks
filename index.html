@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>任務管理系統</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Cormorant+Garamond:wght@400;600&display=swap">
@@ -208,24 +208,24 @@ tbody tr:hover .del-btn{opacity:1;}
   /* Header */
   .header { height: 56px; padding: 0 12px; }
   .logo-img { width: 36px; height: 36px; }
-  .logo-name { font-size: 13px; letter-spacing: 0.5px; }
+  .logo-name { font-size: 15px; letter-spacing: 0.5px; }
 
   /* Top nav 一行 */
   .topnav { height: auto; padding: 6px 8px; gap: 4px; flex-wrap: wrap; }
-  .tn-btn { font-size: 11px; padding: 4px 8px; }
-  .tn-add { font-size: 12px; }
+  .tn-btn { font-size: 14px; padding: 6px 12px; }
+  .tn-add { font-size: 15px; }
   .m-count { display: none; }
   .tn-divider { display: none; }
 
   /* 統計列一行 */
   .stats-row { flex-wrap: nowrap; overflow-x: visible; }
   .stat-box { flex: 1; min-width: 0; padding: 8px 6px; border-right: 1px solid var(--bd) !important; border-bottom: none !important; }
-  .stat-num { font-size: 18px; }
-  .stat-lbl { font-size: 10px; }
+  .stat-num { font-size: 22px; }
+  .stat-lbl { font-size: 12px; }
 
   /* Toolbar */
   .toolbar { padding: 8px 12px; flex-wrap: wrap; gap: 8px; }
-  .page-title { font-size: 14px; }
+  .page-title { font-size: 17px; }
   .search-box { width: 100%; }
 
   /* ── 卡片式排版 ── */
@@ -235,10 +235,10 @@ tbody tr:hover .del-btn{opacity:1;}
   tbody tr {
     background: var(--navy-l);
     border: 1.5px solid rgba(201,168,76,0.2);
-    border-radius: 14px;
-    margin: 12px 12px;
-    padding: 16px 16px;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+    border-radius: 12px;
+    margin: 10px 10px;
+    padding: 14px 14px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.22);
     display: grid !important;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-areas:
@@ -249,7 +249,7 @@ tbody tr:hover .del-btn{opacity:1;}
       "chouse   phone    ext"
       "desc     desc     desc";
     column-gap: 10px;
-    row-gap: 12px;
+    row-gap: 10px;
     align-items: start;
   }
 
@@ -288,7 +288,7 @@ tbody tr:hover .del-btn{opacity:1;}
   tbody td:nth-child(2) { text-align: center; margin-bottom: 4px; }
   tbody td:nth-child(2) .cw { text-align: center; }
   tbody td:nth-child(2) .ct {
-    font-size: 25px !important;
+    font-size: 20px !important;
     font-weight: 700;
     color: var(--t1);
     white-space: normal;
@@ -317,9 +317,9 @@ tbody tr:hover .del-btn{opacity:1;}
   tbody td:nth-child(11)::before,
   tbody td:nth-child(12)::before {
     display: block;
-    font-size: 15px;
+    font-size: 14px;
     color: var(--tm);
-    margin-bottom: 4px;
+    margin-bottom: 3px;
   }
 
   /* 內容文字 */
