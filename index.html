@@ -199,10 +199,11 @@ tbody tr:hover .del-btn{opacity:1;}
 @media (max-width: 480px) {
   /* 頁面可捲動 */
   body { overflow: auto !important; height: auto !important; }
-  #app { height: auto !important; min-height: 100vh; overflow: visible !important; }
-  .layout { overflow: visible !important; height: auto !important; }
-  .main { overflow: visible !important; height: auto !important; }
-  .table-wrap { overflow: visible !important; height: auto !important; }
+  #app { height: auto !important; min-height: 100vh; overflow: visible !important; width: 100% !important; }
+  .layout { overflow: visible !important; height: auto !important; width: 100% !important; flex-direction: column !important; }
+  .main { overflow: visible !important; height: auto !important; width: 100% !important; flex: 1 1 100% !important; max-width: 100% !important; }
+  .table-wrap { overflow: visible !important; height: auto !important; width: 100% !important; }
+  .header, .topnav, .toolbar, .stats-row { width: 100% !important; box-sizing: border-box; }
 
   /* Header */
   .header { height: 56px; padding: 0 12px; }
@@ -219,8 +220,8 @@ tbody tr:hover .del-btn{opacity:1;}
   /* 統計列一行 */
   .stats-row { flex-wrap: nowrap; overflow-x: visible; }
   .stat-box { flex: 1; min-width: 0; padding: 8px 6px; border-right: 1px solid var(--bd) !important; border-bottom: none !important; }
-  .stat-num { font-size: 16px; }
-  .stat-lbl { font-size: 9px; }
+  .stat-num { font-size: 18px; }
+  .stat-lbl { font-size: 10px; }
 
   /* Toolbar */
   .toolbar { padding: 8px 12px; flex-wrap: wrap; gap: 8px; }
@@ -287,7 +288,7 @@ tbody tr:hover .del-btn{opacity:1;}
   tbody td:nth-child(2) { text-align: center; margin-bottom: 4px; }
   tbody td:nth-child(2) .cw { text-align: center; }
   tbody td:nth-child(2) .ct {
-    font-size: 23px !important;
+    font-size: 25px !important;
     font-weight: 700;
     color: var(--t1);
     white-space: normal;
@@ -316,13 +317,13 @@ tbody tr:hover .del-btn{opacity:1;}
   tbody td:nth-child(11)::before,
   tbody td:nth-child(12)::before {
     display: block;
-    font-size: 13px;
+    font-size: 15px;
     color: var(--tm);
-    margin-bottom: 3px;
+    margin-bottom: 4px;
   }
 
   /* 內容文字 */
-  tbody td .ct, tbody td .cw span, tbody td a { font-size: 16px; }
+  tbody td .ct, tbody td .cw span, tbody td a { font-size: 18px; }
 
   /* 負責人 chip 左右並排 */
   tbody td:nth-child(5) .cw > div {
@@ -339,8 +340,8 @@ tbody tr:hover .del-btn{opacity:1;}
   }
   tbody td:nth-child(8) .ct {
     white-space: pre-wrap;
-    line-height: 1.55;
-    font-size: 16px;
+    line-height: 1.6;
+    font-size: 18px;
     color: var(--t2);
   }
 
