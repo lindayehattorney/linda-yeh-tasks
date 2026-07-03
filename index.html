@@ -707,6 +707,14 @@ html.is-ipad .stats-row { flex-wrap: nowrap; }
 html.is-ipad .stat-box { padding: 12px 18px; }
 html.is-ipad .modal { width: 72vw !important; max-width: 620px; }
 
+/* iPad：header 避開系統列（時間、電量、瀏海）*/
+html.is-ipad .header {
+  height: auto;
+  min-height: 72px;
+  padding-top: calc(env(safe-area-inset-top, 0px) + 10px);
+  padding-bottom: 10px;
+}
+
 /* ── 案件名稱編輯框寬度最終強制覆蓋 ── */
 html.is-ipad tbody tr td[data-field="name"] {
   width: auto !important;
