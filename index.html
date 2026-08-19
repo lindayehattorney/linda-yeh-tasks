@@ -1490,6 +1490,40 @@ function isPast(d){
   if(!d) return false;
   return (new Date(d)-new Date()) < 0;
 }
+// 回傳日期相對今天的天數差（0=今天, 1=明天, -1=昨天...）
+function dayDiff(d){
+  if(!d) return null;
+  var today=new Date(); today.setHours(0,0,0,0);
+  var target=new Date(d); target.setHours(0,0,0,0);
+  return Math.round((target-today)/86400000);
+}
+// 顯示用文字：今天/明天/日期
+function fmtDateSmart(d){
+  if(!d) return '';
+  var diff=dayDiff(d);
+  if(diff===0) return '今天';
+  if(diff===1) return '明天';
+  return fmtDate(d);
+}
+// 是否為今天（今天要紅色但不刪除線）
+function isToday(d){
+  return dayDiff(d)===0;
+}
+// 日期樣式：刪除線（過期）＋顏色
+function dateStyle(d){
+  if(!d) return '';
+  var s='';
+  if(isPast(d) && !isToday(d)){
+    s+='text-decoration:line-through;text-decoration-color:currentColor;';
+  }
+  return s;
+}
+// 日期顏色class：今天用過期紅色(dl-u)但不刪除線
+function dlClsSmart(d){
+  if(!d) return 'dl-o';
+  if(isToday(d)) return 'dl-u'; // 今天：紅色
+  return dlCls(d);
+}
 function getMemberName(id){
   if(!id) return '';
   const m=members.find(x=>x.id===id);
@@ -1546,9 +1580,9 @@ function renderCases(){
     <td class="person-cell" onclick="openPersonPopup(event,'${c.id}')">
       <div class="cw" style="justify-content:center">${renderPersonChips(c)}</div></td>
     <td class="date-cell ed" onclick="openCalendar(event,'${c.id}','court')">
-      <div class="cw" style="justify-content:center"><span class="${dlCls(c.court)}" style="${isPast(c.court)?'text-decoration:line-through;text-decoration-color:currentColor;':''}">${fmtDate(c.court)||'<span class="cm">—</span>'}</span></div></td>
+      <div class="cw" style="justify-content:center"><span class="${dlClsSmart(c.court)}" style="${dateStyle(c.court)}">${fmtDateSmart(c.court)||'<span class="cm">—</span>'}</span></div></td>
     <td class="date-cell ed" onclick="openCalendar(event,'${c.id}','deadline')">
-      <div class="cw" style="justify-content:center"><span class="${dlCls(c.deadline)}" style="${isPast(c.deadline)?'text-decoration:line-through;text-decoration-color:currentColor;':''}">${fmtDate(c.deadline)||'<span class="cm">—</span>'}</span></div></td>
+      <div class="cw" style="justify-content:center"><span class="${dlClsSmart(c.deadline)}" style="${dateStyle(c.deadline)}">${fmtDateSmart(c.deadline)||'<span class="cm">—</span>'}</span></div></td>
     <td class="ed desc-cell" data-id="${c.id}" data-field="desc" onclick="handleDescCellClick(event,this,'${c.id}')">
       <div class="cw"><span class="ct${!c.desc?' cm':''}" style="white-space:pre-wrap;line-height:1.5;word-break:break-word">${c.desc?c.desc.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'):'—'}</span></div></td>
     <td class="ed" data-id="${c.id}" data-field="caseNum" onclick="activateTextCell(this,'${c.id}','caseNum')">
