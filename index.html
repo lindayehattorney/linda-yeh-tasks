@@ -1311,9 +1311,9 @@ function renderCalendar(){
   const months=['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'];
   document.getElementById('calTitle').textContent=calYear+'年 '+months[calMonth];
   const grid=document.getElementById('calGrid');
-  const dows=['日','一','二','三','四','五','六'];
+  const dows=['一','二','三','四','五','六','日'];
   let html=dows.map(d=>`<div class="cal-dow">${d}</div>`).join('');
-  const first=new Date(calYear,calMonth,1).getDay();
+  const first=(new Date(calYear,calMonth,1).getDay()+6)%7;
   const daysInMonth=new Date(calYear,calMonth+1,0).getDate();
   const daysInPrev=new Date(calYear,calMonth,0).getDate();
   const today=new Date(); today.setHours(0,0,0,0);
@@ -1673,9 +1673,8 @@ function openDescEditor(caseId){
   ta.value = c.desc || '';
   var overlay = document.getElementById('descEditorOverlay');
   overlay.classList.add('show');
-  var isDesktop = isDesktopMode();
   var closeBtn = document.getElementById('descEditorCloseBtn');
-  closeBtn.style.display = isDesktop ? 'none' : 'inline-block';
+  closeBtn.style.display = 'inline-block';
 
   // Remove old keydown listener if any, then add new one
   if(ta._descKeyHandler) ta.removeEventListener('keydown', ta._descKeyHandler);
@@ -1770,6 +1769,11 @@ function renderPersonCheckboxes(selectedIds){
 
 // ── Person popup (inline) ──
 let personPopupCaseId=null;
+function closePersonPopup(){
+  document.getElementById('personPopup').style.display='none';
+  var bd=document.getElementById('personPopupBackdrop');
+  if(bd) bd.style.display='none';
+}
 function openPersonPopup(e, caseId){
   e.stopPropagation();
   commitActiveCell();
@@ -1783,8 +1787,8 @@ function openPersonPopup(e, caseId){
   } else {
     list.innerHTML=members.map(m=>`
       <div class="sp-item" onclick="togglePersonAssign('${m.id}')" id="pp_${m.id}">
-        <div style="width:16px;height:16px;border-radius:4px;border:1.5px solid var(--bd-b);display:flex;align-items:center;justify-content:center;flex-shrink:0;${selectedIds.includes(m.id)?'background:var(--gold);border-color:var(--gold)':''}">
-          ${selectedIds.includes(m.id)?'<i class="ti ti-check" style="font-size:11px;color:var(--navy)"></i>':''}
+        <div class="pp-box" style="width:16px;height:16px;border-radius:4px;border:1.5px solid var(--bd-b);display:flex;align-items:center;justify-content:center;flex-shrink:0;${selectedIds.includes(m.id)?'background:var(--gold);border-color:var(--gold)':''}">
+          <i class="ti ti-check pp-check" style="font-size:11px;color:var(--navy);${selectedIds.includes(m.id)?'':'display:none;'}"></i>
         </div>
         <span>${m.name}</span>
       </div>
@@ -1808,8 +1812,21 @@ function togglePersonAssign(memberId){
   else c.personIds.push(memberId);
   var pCase=cases.find(function(x){return x.id===personPopupCaseId;});
   if(pCase) dbSaveCase(pCase);
-  // re-render popup checkboxes
-  openPersonPopup({stopPropagation:()=>{},currentTarget:document.getElementById('personPopup')}, personPopupCaseId);
+  // 只更新這一列的勾勾與方框，不重開選單（避免跳動）
+  var row=document.getElementById('pp_'+memberId);
+  if(row){
+    var on=c.personIds.includes(memberId);
+    var box=row.querySelector('.pp-box');
+    var check=row.querySelector('.pp-check');
+    if(box){
+      box.style.background = on ? 'var(--gold)' : '';
+      box.style.borderColor = on ? 'var(--gold)' : 'var(--bd-b)';
+    }
+    if(check){
+      check.style.display = on ? '' : 'none';
+    }
+  }
+  // 背景的案件列表也更新，但不動選單
   renderSidebar(); renderCases();
 }
 
@@ -1957,6 +1974,9 @@ function dragEnd(e){
 <div id="personPopup" class="status-popup" style="display:none;min-width:180px;">
   <div style="font-size:10px;color:var(--tm);padding:4px 8px 6px;text-transform:uppercase;letter-spacing:.8px">指派負責人</div>
   <div id="personPopupList"></div>
+  <div style="padding:8px 8px 4px;margin-top:4px;border-top:1px solid var(--bd);">
+    <button onclick="closePersonPopup()" style="width:100%;background:var(--gold);color:var(--navy);border:none;border-radius:6px;padding:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">完成</button>
+  </div>
 </div>
 
 
