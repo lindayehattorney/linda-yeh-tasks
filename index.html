@@ -558,12 +558,11 @@ html.is-ipad tbody tr:has(td.checkbox-col) {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   grid-template-areas:
-    "name    name     name    name    name"
-    "chouse  person   stock   casenum status"
-    "court   deadline phone   ext     fax"
-    "desc    desc     desc    desc    desc"
-    "admdl   admdl    admdl   admdl   admdl"
-    "admnote admnote  admnote admnote admnote";
+    "name    name     name    name    status"
+    "chouse  person   stock   casenum court"
+    "phone   ext      fax     .       ."
+    "deadline desc    desc    desc    desc"
+    "admdl   admnote  admnote admnote admnote";
   column-gap: 18px;
   row-gap: 16px;
   align-items: start;
@@ -673,20 +672,24 @@ html.is-ipad tbody td:nth-child(5) .cw > div {
   justify-content: flex-start;
 }
 
-/* 狀態：靠左 */
-html.is-ipad tbody td:nth-child(4) .cw { justify-content: flex-start; }
+/* 狀態：第一排右側，靠右對齊、垂直置中 */
+html.is-ipad tbody td:nth-child(4) { align-self: center; }
+html.is-ipad tbody td:nth-child(4)::before { display: none !important; content: "" !important; }
+html.is-ipad tbody td:nth-child(4) .cw { justify-content: flex-end; }
 
-/* 律師辦案事項：完整區塊，上分隔線 */
-html.is-ipad tbody td:nth-child(8) {
-  margin-top: 6px;
-  padding-top: 14px;
-  border-top: 1px solid rgba(201,168,76,0.12);
-}
+/* 律師辦案事項：文字區 */
 html.is-ipad tbody td:nth-child(8) .ct {
   white-space: pre-wrap;
   line-height: 1.6;
   font-size: 18px;
   color: var(--t2);
+}
+/* 第4、5排上分隔線（律師辦案事項那一排開始） */
+html.is-ipad tbody td:nth-child(7),
+html.is-ipad tbody td:nth-child(8) {
+  margin-top: 6px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(201,168,76,0.12);
 }
 
 /* 行政事項：完整區塊 */
