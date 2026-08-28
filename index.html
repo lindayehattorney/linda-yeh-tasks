@@ -832,7 +832,7 @@ html.is-ipad tbody tr td[data-field="name"] textarea {
               <th style="width:100px;text-align:center">行政截止日</th>
               <th style="width:155px">案號</th>
               <th style="width:48px">股別</th>
-              <th style="width:120px">電話號碼</th>
+              <th style="width:140px">電話號碼</th>
               <th style="width:52px">分機</th>
               <th style="width:120px">傳真號碼</th>
               <th style="width:44px"></th>
@@ -1404,7 +1404,7 @@ function activateTextCell(td,caseId,field){
     input.type='text';
     input.className='ii';
     // 電話/傳真固定寬度，避免撐開欄位
-    if(field==='phone'||field==='fax'){ input.style.maxWidth='108px'; input.style.width='108px'; }
+    if(field==='phone'||field==='fax'){ input.style.maxWidth='130px'; input.style.width='130px'; }
     if(field==='ext'){ input.style.maxWidth='48px'; input.style.width='48px'; }
   }
   input.value=caseObj[field]||'';
@@ -1606,8 +1606,8 @@ function renderCases(){
       <div class="cw"><span class="ct${!c.caseNum?' cm':''}">${c.caseNum||'—'}</span></div></td>
     <td class="ed" data-id="${c.id}" data-field="courtStock" onclick="activateTextCell(this,'${c.id}','courtStock')">
       <div class="cw"><span class="ct${!c.courtStock?' cm':''}">${c.courtStock||'—'}</span></div></td>
-    <td data-id="${c.id}" data-field="phone" onclick="handlePhoneCell(event,'${c.id}')" style="width:120px;max-width:120px">
-      <div class="cw">${c.phone?`<a href="tel:${c.phone.replace(/[^0-9+]/g,'')}" onclick="event.stopPropagation()" style="color:#7DC3F7;text-decoration:none;display:flex;align-items:center;gap:4px;white-space:nowrap"><i class="ti ti-phone" style="font-size:12px;flex-shrink:0"></i>${c.phone}</a>`:'<span class="cm">—</span>'}</div></td>
+    <td data-id="${c.id}" data-field="phone" onclick="handlePhoneCell(event,'${c.id}')" style="width:140px;max-width:140px;cursor:text">
+      <div class="cw" style="min-height:24px">${c.phone?`<a href="tel:${c.phone.replace(/[^0-9+]/g,'')}" onclick="event.stopPropagation()" style="color:#7DC3F7;text-decoration:none;display:flex;align-items:center;gap:4px;white-space:nowrap"><i class="ti ti-phone" style="font-size:12px;flex-shrink:0"></i>${c.phone}</a>`:'<span class="cm">—</span>'}</div></td>
     <td class="ed" data-id="${c.id}" data-field="ext" onclick="activateTextCell(this,'${c.id}','ext')">
       <div class="cw"><span class="ct${!c.ext?' cm':''}">${c.ext||'—'}</span></div></td>
     <td class="ed" data-id="${c.id}" data-field="fax" onclick="activateTextCell(this,'${c.id}','fax')">
