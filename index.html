@@ -826,11 +826,14 @@ html.is-ipad tbody tr td[data-field="name"] textarea {
               <th style="width:80px;text-align:center">負責人</th>
               <th style="width:100px;text-align:center">開庭日</th>
               <th style="width:100px;text-align:center">工作截止日</th>
-              <th style="width:275px">進行概述</th>
+              <th style="width:240px">律師辦案事項</th>
+              <th style="width:240px">行政事項</th>
+              <th style="width:100px;text-align:center">行政截止日</th>
               <th style="width:155px">案號</th>
               <th style="width:48px">股別</th>
               <th style="width:140px">電話</th>
               <th style="width:52px">分機</th>
+              <th style="width:120px">傳真號碼</th>
               <th style="width:44px"></th>
             </tr>
           </thead>
@@ -918,6 +921,9 @@ function mapCaseRow(row){
     phone: row.phone || '',
     ext: row.ext || '',
     desc: row.description || '',
+    adminNote: row.admin_note || '',
+    adminDeadline: row.admin_deadline || '',
+    fax: row.fax || '',
     personIds: row.personids || [],
     created_at: row.created_at,
     deleted_at: row.deleted_at || null
@@ -996,6 +1002,9 @@ function dbSaveCase(caseObj, callback){
     phone: caseObj.phone || '',
     ext: caseObj.ext || '',
     description: caseObj.desc || '',
+    admin_note: caseObj.adminNote || '',
+    admin_deadline: caseObj.adminDeadline || null,
+    fax: caseObj.fax || '',
     personids: caseObj.personIds || []
   };
   var isNew = !caseObj.id || caseObj.id.startsWith('tmp_');
@@ -1384,7 +1393,7 @@ function activateTextCell(td,caseId,field){
   let input;
   const textareaFields=['desc','name','courthouse','caseNum','courtStock'];
   // 進行概述以外的欄位：Enter 儲存跳出，Shift+Enter 換行
-  const enterSavesFields=['name','courthouse','caseNum','courtStock','phone','ext'];
+  const enterSavesFields=['name','courthouse','caseNum','courtStock','phone','ext','fax'];
   if(textareaFields.includes(field)){
     input=document.createElement('textarea');
     input.className='ita';
@@ -1585,6 +1594,10 @@ function renderCases(){
       <div class="cw" style="justify-content:center"><span class="${dlClsSmart(c.deadline)}" style="${dateStyle(c.deadline)}">${fmtDateSmart(c.deadline)||'<span class="cm">—</span>'}</span></div></td>
     <td class="ed desc-cell" data-id="${c.id}" data-field="desc" onclick="handleDescCellClick(event,this,'${c.id}')">
       <div class="cw"><span class="ct${!c.desc?' cm':''}" style="white-space:pre-wrap;line-height:1.5;word-break:break-word">${c.desc?c.desc.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'):'—'}</span></div></td>
+    <td class="ed admin-note-cell" data-id="${c.id}" data-field="adminNote" onclick="handleAdminNoteCellClick(event,this,'${c.id}')">
+      <div class="cw"><span class="ct${!c.adminNote?' cm':''}" style="white-space:pre-wrap;line-height:1.5;word-break:break-word">${c.adminNote?c.adminNote.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'):'—'}</span></div></td>
+    <td class="date-cell ed" onclick="openCalendar(event,'${c.id}','adminDeadline')">
+      <div class="cw" style="justify-content:center"><span class="${dlClsSmart(c.adminDeadline)}" style="${dateStyle(c.adminDeadline)}">${fmtDateSmart(c.adminDeadline)||'<span class="cm">—</span>'}</span></div></td>
     <td class="ed" data-id="${c.id}" data-field="caseNum" onclick="activateTextCell(this,'${c.id}','caseNum')">
       <div class="cw"><span class="ct${!c.caseNum?' cm':''}">${c.caseNum||'—'}</span></div></td>
     <td class="ed" data-id="${c.id}" data-field="courtStock" onclick="activateTextCell(this,'${c.id}','courtStock')">
@@ -1593,6 +1606,8 @@ function renderCases(){
       <div class="cw">${c.phone?`<a href="tel:${c.phone.replace(/[^0-9+]/g,'')}" onclick="event.stopPropagation()" style="color:#7DC3F7;text-decoration:none;display:flex;align-items:center;gap:4px;white-space:nowrap"><i class="ti ti-phone" style="font-size:12px;flex-shrink:0"></i>${c.phone}</a>`:'<span class="cm">—</span>'}</div></td>
     <td class="ed" data-id="${c.id}" data-field="ext" onclick="activateTextCell(this,'${c.id}','ext')">
       <div class="cw"><span class="ct${!c.ext?' cm':''}">${c.ext||'—'}</span></div></td>
+    <td class="ed" data-id="${c.id}" data-field="fax" onclick="activateTextCell(this,'${c.id}','fax')">
+      <div class="cw"><span class="ct${!c.fax?' cm':''}">${c.fax||'—'}</span></div></td>
     <td style="text-align:center">
       <button class="del-btn" onclick="deleteRow('${c.id}')" title="刪除"><i class="ti ti-trash"></i></button></td>
   </tr>`;
@@ -1697,14 +1712,16 @@ function confirmPermanentDelete(id){
 
 
 // ── Fullscreen Desc Editor (mobile) ──
-var descEditorCaseId = null;
-function openDescEditor(caseId){
+var descEditorField = "desc", descEditorCaseId = null;
+function openDescEditor(caseId, field){
   var c = cases.find(function(x){ return x.id === caseId; });
   if(!c) return;
   descEditorCaseId = caseId;
+  descEditorField = field || 'desc';
   document.getElementById('descEditorCaseName').textContent = c.name || '未命名案件';
+  document.querySelector('.desc-editor-title').textContent = (descEditorField==='adminNote') ? '行政事項' : '進行概述';
   var ta = document.getElementById('descEditorTextarea');
-  ta.value = c.desc || '';
+  ta.value = c[descEditorField] || '';
   var overlay = document.getElementById('descEditorOverlay');
   overlay.classList.add('show');
   var closeBtn = document.getElementById('descEditorCloseBtn');
@@ -1744,12 +1761,13 @@ function closeDescEditor(){
   if(descEditorCaseId){
     var c = cases.find(function(x){ return x.id === descEditorCaseId; });
     if(c){
-      c.desc = document.getElementById('descEditorTextarea').value;
+      c[descEditorField||'desc'] = document.getElementById('descEditorTextarea').value;
       dbSaveCase(c);
     }
   }
   document.getElementById('descEditorOverlay').classList.remove('show');
   descEditorCaseId = null;
+  descEditorField = 'desc';
 }
 function descEditorOverlayClick(e){
   // Only close if clicking the overlay itself (not the modal content) AND on desktop
@@ -1770,7 +1788,10 @@ function activateDescCell(caseId){
 
 // ── Decide desc cell behavior by screen size ──
 function handleDescCellClick(e, td, caseId){
-  openDescEditor(caseId);
+  openDescEditor(caseId, 'desc');
+}
+function handleAdminNoteCellClick(e, td, caseId){
+  openDescEditor(caseId, 'adminNote');
 }
 
 // ── Phone cell: single click = call, double click = edit ──
@@ -1786,7 +1807,10 @@ function renderPersonChips(c){
   if(!ids.length) return '<span class="cm">—</span>';
   return '<div style="display:flex;flex-direction:column;gap:3px;">'+ids.map(id=>{
     const m=members.find(x=>x.id===id);
-    return m?`<span class="pchip">${m.name}</span>`:'';
+    if(!m) return '';
+    // 所長督辦：金黃色字
+    var goldStyle = (m.name==='所長督辦') ? ' style="color:var(--gold);border-color:var(--gold)"' : '';
+    return `<span class="pchip"${goldStyle}>${m.name}</span>`;
   }).filter(Boolean).join('')+'</div>';
 }
 
