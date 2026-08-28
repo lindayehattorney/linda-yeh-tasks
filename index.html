@@ -1403,6 +1403,9 @@ function activateTextCell(td,caseId,field){
     input=document.createElement('input');
     input.type='text';
     input.className='ii';
+    // 電話/傳真固定寬度，避免撐開欄位
+    if(field==='phone'||field==='fax'){ input.style.maxWidth='108px'; input.style.width='108px'; }
+    if(field==='ext'){ input.style.maxWidth='48px'; input.style.width='48px'; }
   }
   input.value=caseObj[field]||'';
   var isComposing=false;
@@ -1806,13 +1809,18 @@ function handlePhoneCell(e, caseId){
 function renderPersonChips(c){
   const ids=c.personIds||(c.personId?[c.personId]:[]);
   if(!ids.length) return '<span class="cm">—</span>';
-  return '<div style="display:flex;flex-direction:column;gap:3px;">'+ids.map(id=>{
-    const m=members.find(x=>x.id===id);
-    if(!m) return '';
+  // 取得對應人員，並讓「所長督辦」永遠排最上面
+  var chipMembers = ids.map(id=>members.find(x=>x.id===id)).filter(Boolean);
+  chipMembers.sort(function(a,b){
+    if(a.name==='所長督辦') return -1;
+    if(b.name==='所長督辦') return 1;
+    return 0;
+  });
+  return '<div style="display:flex;flex-direction:column;gap:3px;">'+chipMembers.map(m=>{
     // 所長督辦：金黃色字
     var goldStyle = (m.name==='所長督辦') ? ' style="color:var(--gold);border-color:var(--gold)"' : '';
     return `<span class="pchip"${goldStyle}>${m.name}</span>`;
-  }).filter(Boolean).join('')+'</div>';
+  }).join('')+'</div>';
 }
 
 function renderPersonCheckboxes(selectedIds){
