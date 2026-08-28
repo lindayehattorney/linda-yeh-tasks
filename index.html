@@ -1632,12 +1632,21 @@ function getMemberName(id){
 function renderCases(){
   const q=(document.getElementById('searchInput').value||'').toLowerCase();
   let data=currentMemberId?cases.filter(c=>(c.personIds||[]).includes(currentMemberId)):cases.slice();
-  if(q) data=data.filter(c=>
-    (c.name||'').toLowerCase().includes(q)||
-    (c.desc||'').toLowerCase().includes(q)||
-    (c.caseNum||'').toLowerCase().includes(q)||
-    (c.personIds||[]).some(id=>getMemberName(id).toLowerCase().includes(q))
-  );
+  if(q) data=data.filter(c=>{
+    // 全域搜尋：涵蓋所有欄位，但排除負責人名字
+    var fields=[
+      c.name, c.courthouse, c.status,
+      c.court, c.deadline, c.adminDeadline,
+      c.desc, c.adminNote,
+      c.caseNum, c.courtStock, c.phone, c.ext, c.fax
+    ];
+    // 狀態中文對照也可搜尋（優先處理/處理中/已完成）
+    var statusText = c.status==='urgent'?'優先處理':(c.status==='progress'?'處理中':(c.status==='done'?'已完成':''));
+    fields.push(statusText);
+    return fields.some(function(v){
+      return (v||'').toString().toLowerCase().includes(q);
+    });
+  });
   const totalCount=data.length;
   const urgent=data.filter(c=>c.status==='urgent').length;
   const prog=data.filter(c=>c.status==='progress').length;
