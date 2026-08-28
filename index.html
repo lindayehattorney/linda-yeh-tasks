@@ -87,18 +87,18 @@ table{width:max-content;min-width:100%;border-collapse:collapse;}
 @media (min-width: 481px) {
   html:not(.is-ipad) thead th:nth-child(2){position:sticky;top:0;left:0;z-index:30;background:#1A2535;}
   html:not(.is-ipad) tbody td:nth-child(2){position:sticky;left:0;z-index:5;background:#111F30;box-shadow:3px 0 6px rgba(0,0,0,0.25);}
-  html:not(.is-ipad) tbody tr:hover td:nth-child(2){background:#162438;}
+  @media (hover: hover) and (pointer: fine){ html:not(.is-ipad) tbody tr:hover td:nth-child(2){background:#162438;} }
   html:not(.is-ipad) tbody tr.row-selected td:nth-child(2){background:#1a2d3e;}
 }
 thead th{position:sticky;top:0;z-index:10;background:#1A2535;padding:9px 12px;text-align:left;font-size:10px;color:var(--tm);text-transform:uppercase;letter-spacing:.8px;font-weight:500;border-bottom:1px solid var(--bd);white-space:nowrap;user-select:none;}
 tbody tr{border-bottom:1px solid rgba(201,168,76,0.07);}
-tbody tr:hover{background:rgba(201,168,76,0.04);}
+@media (hover: hover) and (pointer: fine){ tbody tr:hover{background:rgba(201,168,76,0.04);} }
 tbody td{padding:0;vertical-align:middle;font-size:13px;position:relative;}
 .cw{padding:8px 12px;min-height:38px;display:flex;align-items:center;}
 .ct{color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;}
 .cm{color:var(--tm);}
 td.ed .cw{cursor:pointer;}
-td.ed:hover .cw{background:rgba(201,168,76,0.07);border-radius:4px;}
+@media (hover: hover) and (pointer: fine){ td.ed:hover .cw{background:rgba(201,168,76,0.07);border-radius:4px;} }
 
 /* Inline inputs */
 .ii{width:100%;background:var(--surf-h);border:1.5px solid var(--gold);border-radius:4px;padding:6px 8px;font-size:13px;color:var(--t1);font-family:inherit;outline:none;display:block;}
@@ -279,17 +279,18 @@ tbody tr:hover .del-btn{opacity:1;}
     max-width: calc(100vw - 22px) !important;
     overflow: hidden;
     display: grid !important;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
     grid-template-areas:
-      "name    name    name"
-      "chouse  chouse  chouse"
-      "status  court   person"
-      "casenum casenum stock"
-      "phone   ext     fax"
-      "deadline deadline deadline"
-      "desc    desc    desc"
-      "admdl   admdl   admdl"
-      "admnote admnote admnote";
+      "name     name"
+      "chouse   chouse"
+      "court    court"
+      "status   person"
+      "casenum  stock"
+      "phone    ext"
+      "fax      fax"
+      "deadline admdl"
+      "desc     desc"
+      "admnote  admnote";
     column-gap: 9px;
     row-gap: 10px;
     align-items: start;
@@ -389,10 +390,12 @@ tbody tr:hover .del-btn{opacity:1;}
     flex-direction: row !important; flex-wrap: wrap; gap: 5px !important;
   }
 
-  /* 工作截止日、行政截止日：整排置中 */
-  tbody td:nth-child(7), tbody td:nth-child(10) { text-align: center; }
-  tbody td:nth-child(7) .cw, tbody td:nth-child(10) .cw { justify-content: center; }
-  tbody td:nth-child(7)::before, tbody td:nth-child(10)::before { text-align: center; }
+  /* 開庭日整排置中 */
+  tbody td:nth-child(6) { text-align: center; }
+  tbody td:nth-child(6) .cw { justify-content: center; }
+  tbody td:nth-child(6)::before { text-align: center; }
+  /* 工作截止日、行政截止日 */
+  tbody td:nth-child(7) .cw, tbody td:nth-child(10) .cw { justify-content: flex-start; }
 
   /* 律師辦案事項：完整，上分隔線 */
   tbody td:nth-child(8) {
