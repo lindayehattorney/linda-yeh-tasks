@@ -252,17 +252,32 @@ tbody tr:hover .del-btn{opacity:1;}
   .stat-lbl { font-size: 11px; }
 
   /* ══ 卡片 ══ */
-  /* 手機：完全關閉點擊高亮與所有 hover 變色 */
-  * { -webkit-tap-highlight-color: transparent !important; }
-  tbody tr:hover, tbody tr:active,
-  tbody tr:hover td, tbody tr:active td,
-  tbody tr:hover td:nth-child(2),
-  td.ed:hover .cw, td.ed:active .cw,
-  tr.select-row:hover, tr.select-row.row-selected:hover,
-  .badge-cell:hover, .person-cell:hover, .date-cell:hover {
-    background: inherit !important;
+  /* 手機：徹底關閉點擊高亮與所有變色（任何狀態都透明）*/
+  * { -webkit-tap-highlight-color: rgba(0,0,0,0) !important; }
+  /* td 永遠透明，.cw 永遠透明，不管 hover/active/focus */
+  tbody td,
+  tbody td:hover,
+  tbody td:active,
+  tbody td:focus,
+  tbody td .cw,
+  tbody td .cw:hover,
+  tbody td .cw:active,
+  tbody td.ed:hover .cw,
+  tbody td.ed:active .cw,
+  tbody td.badge-cell:hover,
+  tbody td.person-cell:hover,
+  tbody td.date-cell:hover {
+    background: transparent !important;
+    background-color: transparent !important;
   }
-  td.ed:hover .cw, td.ed:active .cw { background: none !important; }
+  /* 整列任何狀態都保持卡片底色 */
+  tbody tr:hover,
+  tbody tr:active,
+  tbody tr:focus,
+  tbody tr.select-row:hover,
+  tbody tr.select-row.row-selected:hover {
+    background: var(--navy-l) !important;
+  }
 
   table, thead, tbody, tr, td, th { display: block !important; }
   thead { display: none !important; }
