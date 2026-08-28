@@ -1404,6 +1404,12 @@ function activateTextCell(td,caseId,field){
     input.type='text';
     input.className='ii';
   }
+  // 關閉瀏覽器自動填入建議（避免傳真/電話欄跳出 email 建議）
+  input.setAttribute('autocomplete','off');
+  input.setAttribute('autocorrect','off');
+  input.setAttribute('autocapitalize','off');
+  input.setAttribute('spellcheck','false');
+  input.setAttribute('name','field_'+field+'_'+Math.random().toString(36).slice(2,8));
   input.value=caseObj[field]||'';
   var isComposing=false;
   input.addEventListener('compositionstart',function(){ isComposing=true; });
