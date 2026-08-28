@@ -267,18 +267,17 @@ tbody tr:hover .del-btn{opacity:1;}
     max-width: calc(100vw - 22px) !important;
     overflow: hidden;
     display: grid !important;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     grid-template-areas:
-      "name     name"
-      "chouse   status"
-      "court    person"
-      "casenum  stock"
-      "phone    ext"
-      "fax      fax"
-      "deadline deadline"
-      "desc     desc"
-      "admdl    admdl"
-      "admnote  admnote";
+      "name    name    name"
+      "chouse  chouse  chouse"
+      "status  person  person"
+      "court   casenum stock"
+      "phone   ext     fax"
+      "deadline deadline deadline"
+      "desc    desc    desc"
+      "admdl   admdl   admdl"
+      "admnote admnote admnote";
     column-gap: 9px;
     row-gap: 10px;
     align-items: start;
@@ -367,6 +366,9 @@ tbody tr:hover .del-btn{opacity:1;}
     display: block; font-size: 13px; color: var(--tm); margin-bottom: 3px;
   }
 
+  /* 案號在窄欄自動換行 */
+  tbody td:nth-child(11) .ct { white-space: normal !important; word-break: break-word; }
+
   /* 內容文字 */
   tbody td .ct, tbody td .cw span, tbody td a { font-size: 16px; }
 
@@ -374,6 +376,11 @@ tbody tr:hover .del-btn{opacity:1;}
   tbody td:nth-child(5) .cw > div {
     flex-direction: row !important; flex-wrap: wrap; gap: 5px !important;
   }
+
+  /* 工作截止日、行政截止日：整排置中 */
+  tbody td:nth-child(7), tbody td:nth-child(10) { text-align: center; }
+  tbody td:nth-child(7) .cw, tbody td:nth-child(10) .cw { justify-content: center; }
+  tbody td:nth-child(7)::before, tbody td:nth-child(10)::before { text-align: center; }
 
   /* 律師辦案事項：完整，上分隔線 */
   tbody td:nth-child(8) {
