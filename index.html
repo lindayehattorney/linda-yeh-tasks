@@ -252,6 +252,14 @@ tbody tr:hover .del-btn{opacity:1;}
   .stat-lbl { font-size: 11px; }
 
   /* ══ 卡片 ══ */
+  /* 手機點擊不變色 */
+  tbody tr, tbody td, .stat-box, .tn-btn, .badge-cell, .person-cell, .date-cell, .ed {
+    -webkit-tap-highlight-color: transparent;
+  }
+  tbody tr:hover { background: transparent !important; }
+  tbody tr:hover td:nth-child(2) { background: transparent !important; }
+  tbody tr:active { background: transparent !important; }
+
   table, thead, tbody, tr, td, th { display: block !important; }
   thead { display: none !important; }
 
@@ -271,8 +279,8 @@ tbody tr:hover .del-btn{opacity:1;}
     grid-template-areas:
       "name    name    name"
       "chouse  chouse  chouse"
-      "status  person  person"
-      "court   casenum stock"
+      "status  court   person"
+      "casenum casenum stock"
       "phone   ext     fax"
       "deadline deadline deadline"
       "desc    desc    desc"
