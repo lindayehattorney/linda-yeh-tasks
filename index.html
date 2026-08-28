@@ -270,12 +270,15 @@ tbody tr:hover .del-btn{opacity:1;}
     grid-template-columns: 1fr 1fr;
     grid-template-areas:
       "name     name"
-      "chouse   chouse"
-      "status   person"
-      "court    deadline"
+      "chouse   status"
+      "court    person"
       "casenum  stock"
       "phone    ext"
-      "desc     desc";
+      "fax      fax"
+      "deadline deadline"
+      "desc     desc"
+      "admdl    admdl"
+      "admnote  admnote";
     column-gap: 9px;
     row-gap: 10px;
     align-items: start;
@@ -301,18 +304,21 @@ tbody tr:hover .del-btn{opacity:1;}
   }
 
   /* 欄位定位（td 實際位置）*/
-  tbody td:nth-child(2)  { grid-area: name; }
-  tbody td:nth-child(3)  { grid-area: chouse; }
-  tbody td:nth-child(4)  { grid-area: status; }
-  tbody td:nth-child(5)  { grid-area: person; }
-  tbody td:nth-child(6)  { grid-area: court; }
-  tbody td:nth-child(7)  { grid-area: deadline; }
-  tbody td:nth-child(8)  { grid-area: desc; }
-  tbody td:nth-child(9)  { grid-area: casenum; }
-  tbody td:nth-child(10) { grid-area: stock; }
-  tbody td:nth-child(11) { grid-area: phone; }
-  tbody td:nth-child(12) { grid-area: ext; }
-  tbody td:nth-child(13) { display: none !important; }
+  tbody td:nth-child(2)  { grid-area: name; }      /* 案件名稱 */
+  tbody td:nth-child(3)  { grid-area: chouse; }    /* 法院檢察署 */
+  tbody td:nth-child(4)  { grid-area: status; }    /* 狀態 */
+  tbody td:nth-child(5)  { grid-area: person; }    /* 負責人 */
+  tbody td:nth-child(6)  { grid-area: court; }     /* 開庭日 */
+  tbody td:nth-child(7)  { grid-area: deadline; }  /* 工作截止日 */
+  tbody td:nth-child(8)  { grid-area: desc; }      /* 律師辦案事項 */
+  tbody td:nth-child(9)  { grid-area: admnote; }   /* 行政事項 */
+  tbody td:nth-child(10) { grid-area: admdl; }     /* 行政截止日 */
+  tbody td:nth-child(11) { grid-area: casenum; }   /* 案號 */
+  tbody td:nth-child(12) { grid-area: stock; }     /* 股別 */
+  tbody td:nth-child(13) { grid-area: phone; }     /* 電話 */
+  tbody td:nth-child(14) { grid-area: ext; }       /* 分機 */
+  tbody td:nth-child(15) { grid-area: fax; }       /* 傳真 */
+  tbody td:nth-child(16) { display: none !important; }  /* 刪除鈕 */
 
   /* 第1排 案件名稱：置中大字，無標籤 */
   tbody td:nth-child(2) { text-align: center; }
@@ -338,11 +344,14 @@ tbody tr:hover .del-btn{opacity:1;}
   tbody td:nth-child(5)::before  { content: "負責人"; }
   tbody td:nth-child(6)::before  { content: "開庭日"; }
   tbody td:nth-child(7)::before  { content: "工作截止日"; }
-  tbody td:nth-child(8)::before  { content: "進行概述"; }
-  tbody td:nth-child(9)::before  { content: "案號"; }
-  tbody td:nth-child(10)::before { content: "股別"; }
-  tbody td:nth-child(11)::before { content: "電話"; }
-  tbody td:nth-child(12)::before { content: "分機"; }
+  tbody td:nth-child(8)::before  { content: "律師辦案事項"; }
+  tbody td:nth-child(9)::before  { content: "行政事項"; }
+  tbody td:nth-child(10)::before { content: "行政截止日"; }
+  tbody td:nth-child(11)::before { content: "案號"; }
+  tbody td:nth-child(12)::before { content: "股別"; }
+  tbody td:nth-child(13)::before { content: "電話號碼"; }
+  tbody td:nth-child(14)::before { content: "分機"; }
+  tbody td:nth-child(15)::before { content: "傳真號碼"; }
   tbody td:nth-child(4)::before,
   tbody td:nth-child(5)::before,
   tbody td:nth-child(6)::before,
@@ -351,7 +360,10 @@ tbody tr:hover .del-btn{opacity:1;}
   tbody td:nth-child(9)::before,
   tbody td:nth-child(10)::before,
   tbody td:nth-child(11)::before,
-  tbody td:nth-child(12)::before {
+  tbody td:nth-child(12)::before,
+  tbody td:nth-child(13)::before,
+  tbody td:nth-child(14)::before,
+  tbody td:nth-child(15)::before {
     display: block; font-size: 13px; color: var(--tm); margin-bottom: 3px;
   }
 
@@ -363,12 +375,17 @@ tbody tr:hover .del-btn{opacity:1;}
     flex-direction: row !important; flex-wrap: wrap; gap: 5px !important;
   }
 
-  /* 第7排 進行概述：完整，上分隔線 */
+  /* 律師辦案事項：完整，上分隔線 */
   tbody td:nth-child(8) {
     margin-top: 3px; padding-top: 10px !important;
     border-top: 1px solid rgba(201,168,76,0.12);
   }
   tbody td:nth-child(8) .ct {
+    white-space: pre-wrap; line-height: 1.6; font-size: 16px; color: var(--t2);
+    overflow-wrap: break-word; word-break: break-word; max-width: 100% !important;
+  }
+  /* 行政事項：完整文字區 */
+  tbody td:nth-child(9) .ct {
     white-space: pre-wrap; line-height: 1.6; font-size: 16px; color: var(--t2);
     overflow-wrap: break-word; word-break: break-word; max-width: 100% !important;
   }
