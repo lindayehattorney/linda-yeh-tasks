@@ -556,12 +556,14 @@ html.is-ipad .table-wrap { overflow-x: hidden; overflow-y: auto; }
 /* 每個案件 = 一張卡片，5欄網格 */
 html.is-ipad tbody tr:has(td.checkbox-col) {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 110px;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   grid-template-areas:
-    "name     name     name     name     name"
-    "chouse   person   court    deadline deadline"
-    "stock    casenum  phone    ext      status"
-    "desc     desc     desc     desc     desc";
+    "name    name     name    name    name"
+    "chouse  person   stock   casenum status"
+    "court   deadline phone   ext     fax"
+    "desc    desc     desc    desc    desc"
+    "admdl   admdl    admdl   admdl   admdl"
+    "admnote admnote  admnote admnote admnote";
   column-gap: 18px;
   row-gap: 16px;
   align-items: start;
@@ -595,24 +597,30 @@ html.is-ipad tbody td:nth-child(4)  { grid-area: status; }    /* 狀態 */
 html.is-ipad tbody td:nth-child(5)  { grid-area: person; }    /* 負責人 */
 html.is-ipad tbody td:nth-child(6)  { grid-area: court; }     /* 開庭日 */
 html.is-ipad tbody td:nth-child(7)  { grid-area: deadline; }  /* 工作截止日 */
-html.is-ipad tbody td:nth-child(8)  { grid-area: desc; }      /* 進行概述 */
-html.is-ipad tbody td:nth-child(9)  { grid-area: casenum; }   /* 案號 */
-html.is-ipad tbody td:nth-child(10) { grid-area: stock; }     /* 股別 */
-html.is-ipad tbody td:nth-child(11) { grid-area: phone; }     /* 電話 */
-html.is-ipad tbody td:nth-child(12) { grid-area: ext; }       /* 分機 */
-html.is-ipad tbody td:nth-child(13) { display: none; }        /* 刪除鈕 */
+html.is-ipad tbody td:nth-child(8)  { grid-area: desc; }      /* 律師辦案事項 */
+html.is-ipad tbody td:nth-child(9)  { grid-area: admnote; }   /* 行政事項 */
+html.is-ipad tbody td:nth-child(10) { grid-area: admdl; }     /* 行政截止日 */
+html.is-ipad tbody td:nth-child(11) { grid-area: casenum; }   /* 案號 */
+html.is-ipad tbody td:nth-child(12) { grid-area: stock; }     /* 股別 */
+html.is-ipad tbody td:nth-child(13) { grid-area: phone; }     /* 電話 */
+html.is-ipad tbody td:nth-child(14) { grid-area: ext; }       /* 分機 */
+html.is-ipad tbody td:nth-child(15) { grid-area: fax; }       /* 傳真 */
+html.is-ipad tbody td:nth-child(16) { display: none; }        /* 刪除鈕 */        /* 刪除鈕 */
 
 /* ── 欄位標籤（對應正確資料）── */
 html.is-ipad tbody td:nth-child(3)::before  { content: "法院／檢察署"; }
+html.is-ipad tbody td:nth-child(4)::before  { content: "狀態"; }
 html.is-ipad tbody td:nth-child(5)::before  { content: "負責人"; }
 html.is-ipad tbody td:nth-child(6)::before  { content: "開庭日"; }
 html.is-ipad tbody td:nth-child(7)::before  { content: "工作截止日"; }
-html.is-ipad tbody td:nth-child(8)::before  { content: "進行概述"; }
-html.is-ipad tbody td:nth-child(9)::before  { content: "案號"; }
-html.is-ipad tbody td:nth-child(10)::before { content: "股別"; }
-html.is-ipad tbody td:nth-child(11)::before { content: "電話"; }
-html.is-ipad tbody td:nth-child(12)::before { content: "分機"; }
-html.is-ipad tbody td:nth-child(4)::before  { content: "狀態"; }
+html.is-ipad tbody td:nth-child(8)::before  { content: "律師辦案事項"; }
+html.is-ipad tbody td:nth-child(9)::before  { content: "行政事項"; }
+html.is-ipad tbody td:nth-child(10)::before { content: "行政截止日"; }
+html.is-ipad tbody td:nth-child(11)::before { content: "案號"; }
+html.is-ipad tbody td:nth-child(12)::before { content: "股別"; }
+html.is-ipad tbody td:nth-child(13)::before { content: "電話號碼"; }
+html.is-ipad tbody td:nth-child(14)::before { content: "分機"; }
+html.is-ipad tbody td:nth-child(15)::before { content: "傳真號碼"; }
 
 html.is-ipad tbody td:nth-child(3)::before,
 html.is-ipad tbody td:nth-child(4)::before,
@@ -623,7 +631,10 @@ html.is-ipad tbody td:nth-child(8)::before,
 html.is-ipad tbody td:nth-child(9)::before,
 html.is-ipad tbody td:nth-child(10)::before,
 html.is-ipad tbody td:nth-child(11)::before,
-html.is-ipad tbody td:nth-child(12)::before {
+html.is-ipad tbody td:nth-child(12)::before,
+html.is-ipad tbody td:nth-child(13)::before,
+html.is-ipad tbody td:nth-child(14)::before,
+html.is-ipad tbody td:nth-child(15)::before {
   display: block;
   font-size: 14px;
   color: var(--tm);
@@ -652,7 +663,7 @@ html.is-ipad tbody td a { font-size: 18px; }
 html.is-ipad tbody td:nth-child(3) .ct { white-space: nowrap; overflow: visible; }
 
 /* 案號：完整顯示 */
-html.is-ipad tbody td:nth-child(9) .ct { white-space: nowrap; overflow: visible; }
+html.is-ipad tbody td:nth-child(11) .ct { white-space: nowrap; overflow: visible; }
 
 /* 負責人 chip 左右並排 */
 html.is-ipad tbody td:nth-child(5) .cw > div {
@@ -665,13 +676,21 @@ html.is-ipad tbody td:nth-child(5) .cw > div {
 /* 狀態：靠左 */
 html.is-ipad tbody td:nth-child(4) .cw { justify-content: flex-start; }
 
-/* 進行概述：完整區塊，上分隔線 */
+/* 律師辦案事項：完整區塊，上分隔線 */
 html.is-ipad tbody td:nth-child(8) {
   margin-top: 6px;
   padding-top: 14px;
   border-top: 1px solid rgba(201,168,76,0.12);
 }
 html.is-ipad tbody td:nth-child(8) .ct {
+  white-space: pre-wrap;
+  line-height: 1.6;
+  font-size: 18px;
+  color: var(--t2);
+}
+
+/* 行政事項：完整區塊 */
+html.is-ipad tbody td:nth-child(9) .ct {
   white-space: pre-wrap;
   line-height: 1.6;
   font-size: 18px;
