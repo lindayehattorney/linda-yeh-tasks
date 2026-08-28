@@ -252,17 +252,17 @@ tbody tr:hover .del-btn{opacity:1;}
   .stat-lbl { font-size: 11px; }
 
   /* ══ 卡片 ══ */
-  /* 手機點擊不變色 */
-  tbody tr, tbody td, .stat-box, .tn-btn, .badge-cell, .person-cell, .date-cell, .ed {
-    -webkit-tap-highlight-color: transparent;
+  /* 手機：完全關閉點擊高亮與所有 hover 變色 */
+  * { -webkit-tap-highlight-color: transparent !important; }
+  tbody tr:hover, tbody tr:active,
+  tbody tr:hover td, tbody tr:active td,
+  tbody tr:hover td:nth-child(2),
+  td.ed:hover .cw, td.ed:active .cw,
+  tr.select-row:hover, tr.select-row.row-selected:hover,
+  .badge-cell:hover, .person-cell:hover, .date-cell:hover {
+    background: inherit !important;
   }
-  tbody tr:hover { background: transparent !important; }
-  tbody tr:hover td:nth-child(2) { background: transparent !important; }
-  tbody tr:active { background: transparent !important; }
-  /* 單格編輯提示底色：手機上關掉（避免點擊變色） */
-  td.ed:hover .cw { background: transparent !important; }
-  td.ed:active .cw { background: transparent !important; }
-  .badge-cell:hover, .person-cell:hover, .date-cell:hover { background: transparent !important; }
+  td.ed:hover .cw, td.ed:active .cw { background: none !important; }
 
   table, thead, tbody, tr, td, th { display: block !important; }
   thead { display: none !important; }
@@ -540,14 +540,18 @@ tr.select-row {
 tr.select-row > td:not(.checkbox-col) {
   pointer-events: none;
 }
+@media (hover: hover) and (pointer: fine){
 tr.select-row:hover {
   background: rgba(201,168,76,0.08) !important;
+}
 }
 tr.select-row.row-selected {
   background: rgba(201,168,76,0.14) !important;
 }
+@media (hover: hover) and (pointer: fine){
 tr.select-row.row-selected:hover {
   background: rgba(201,168,76,0.18) !important;
+}
 }
 
 /* Mobile/tablet card mode select row */
